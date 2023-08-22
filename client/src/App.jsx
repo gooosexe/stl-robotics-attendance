@@ -1,6 +1,7 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
+import Login from './Login'
 
 function App() {
   const [data, setData] = React.useState(null);
@@ -10,14 +11,11 @@ function App() {
       .then((res) => res.json())
       .then((data) => setData(data.message));
   }, []);
-
   return (
-    <div className="App">
-      <header className="App-header">
-        <p>{!data ? "Loading..." : data}</p>
-      </header>
-    </div>
+    <Login />
   );
 }
 
 export default App;
+
+
