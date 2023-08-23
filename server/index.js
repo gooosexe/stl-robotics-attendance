@@ -9,7 +9,16 @@ app.use(cors());
 app.use(express.json());
 
 function isValidUser(username, password){
-    return true;
+    // Open comma seperated values file
+    let fs = require('fs');
+    let rawdata = fs.readFileSync('./server/users.csv');
+    let users = rawdata.toString().split("\n");
+    for (let user of users){
+        let user_info = user.split(",");
+        console.log(user_info);
+    }
+
+    return true; 
 }
 
 function authenticate(req, res, next){
