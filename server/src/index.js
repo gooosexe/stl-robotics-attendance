@@ -8,18 +8,18 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-function isValidUser(username, password){
+function isValidUser(providedUsername, providedPassword){
     // Open comma seperated values file
     let fs = require('fs');
-    let rawdata = fs.readFileSync('./server/users.csv');
+    let rawdata = fs.readFileSync('./src/users.csv');
     let users = rawdata.toString().split("\n");
     for (let user of users){
-        let user_info = user.split(",");
-        console.log(user_info);
+        const [team, name, permission, username, password] = user.split(",");
+        return (providedUsername === username && providedPassword === password);
     }
-
-    return true; 
 }
+
+
 
 function authenticate(req, res, next){
     const {authorization} = req.headers;
@@ -28,6 +28,7 @@ function authenticate(req, res, next){
         if (token === "bigballshd4kmegamax"){
             next();
         } else {
+            res.json({error: "invalid"});
             res.status(403).json({error: "Forbidden ;)"});
         }
     } else {
@@ -47,11 +48,11 @@ app.get("/api", (req, res) => {
 app.post('/login', (req, res) => {
     const {username, password} = req.body; 
     
-    if (isValidUser(username, password)){
-        const token = "bigballshd4kmegamax";
-        res.json({token}); 
+    if (isValidUser(username, password)){   
+        res.json({token: "bigballshd4kmegamax"}); 
     } else {
-        res.status(401).json({error: "Invalid Username or Password"});
+        res.json({token: "invalid"});
+        // res.status(401).json({error: "Invalid Username or Password"});
     }
 });
 

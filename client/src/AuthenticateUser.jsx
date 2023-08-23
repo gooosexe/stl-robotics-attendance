@@ -8,7 +8,7 @@ function Login() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [token, setToken] = useState("");
 
-  function handleSubmit(event) {
+  const handleSubmit = (event) => {
     event.preventDefault();
     fetch("/login", {
       method: "POST",
@@ -19,8 +19,15 @@ function Login() {
     })
       .then((res) => res.json())
       .then((data) => {
-        setIsLoggedIn(true);
-        setToken(data.token);
+        console.log(data);
+        if (data.token !== "invalid") {
+            setIsLoggedIn(true);
+            setToken(data.token);
+        } else {
+            console.log("Invalid username or password")
+            alert("Invalid credentials.")
+            setIsLoggedIn(false);
+        }
       })
       .catch((error) => {
         console.error("Error:", error);
@@ -30,7 +37,6 @@ function Login() {
   if (isLoggedIn) {
     return <div>You are logged in with token: {token}</div>;
   }
-
   return (
     <form onSubmit={handleSubmit}>
       <label>
