@@ -1,7 +1,7 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
-import Login from './Login'
+import AuthenticateUser from './AuthenticateUser'
 
 function App() {
   const [data, setData] = React.useState(null);
@@ -11,8 +11,11 @@ function App() {
       .then((res) => res.json())
       .then((data) => setData(data.message));
   }, []);
+
+  console.log(data); 
+  
   return (
-    <Login />
+    <AuthenticateUser />
   );
 }
 
