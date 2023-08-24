@@ -2,9 +2,12 @@ import React, { useState, useEffect } from "react";
 import jwt from "jwt-decode";
 import "./App.css";
 import "./index.css";
+import Logo from "./roboticsLog.png";
 
 function Login() {
   const [username, setUsername] = useState("");
+  const [name , setName] = useState("");
+  const [team, setTeam] = useState("");
   const [password, setPassword] = useState("");
   const [permission, setPermission] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -28,7 +31,11 @@ function Login() {
           setPermission(decoded.permission);
           setToken(data.token);
           setIsLoggedIn(true);
+          setName(decoded.name);
+          setTeam(decoded.team);
+
           console.log("TOKEN IS: " + data.token);
+
           // Test the token
           fetch("/protected", {
             method: "GET",
@@ -60,7 +67,12 @@ function Login() {
   };
 
   if (isLoggedIn) {
-    return <div>You are logged in with token: {token}</div>;
+    return <div>
+      {/** <add an image  */}
+      <img src={Logo} alt="Logo" />
+      <h1>Welcome {name} on team {team}!</h1>
+      <p>You are logged in with token: {token}</p>
+      </div>;
   }
   return (
     <form onSubmit={handleSubmit}>

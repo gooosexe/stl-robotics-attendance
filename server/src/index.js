@@ -17,7 +17,7 @@ function isValidUser(providedUsername, providedPassword){
     for (let user of users){
         const [team, name, permission, username, password] = user.split(",");
         if (providedUsername === username && providedPassword === password) {
-            return [true, permission]; 
+            return [true, permission, name, team]; 
         }
     }
     return [false, "none"];
@@ -52,10 +52,10 @@ app.get("/api", (req, res) => {
 
 app.post('/login', (req, res) => {
     const {username, password} = req.body; 
-    const [isValid, permission] = isValidUser(username, password);
+    const [isValid, permission, name, team] = isValidUser(username, password);
     
     if (isValid){   
-        const token = jwt.sign({username: username, permission: permission}, "secretKey"); 
+        const token = jwt.sign({username: username, permission: permission, name: name, team: team}, "secretKey"); 
         res.json({token: token}); 
     } else {
         res.json({token: "invalid"});
