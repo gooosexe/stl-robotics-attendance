@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
+import jwt from "jwt-decode";
 import "./App.css";
 import "./index.css";
 
 function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [permission, setPermission] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [token, setToken] = useState("");
 
@@ -15,24 +17,47 @@ function Login() {
       headers: {
         "Content-Type": "application/json",
       },
-      body:  JSON.stringify({ username, password })
+      body: JSON.stringify({ username, password })
     })
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
         if (data.token !== "invalid") {
-            setIsLoggedIn(true);
-            setToken(data.token);
+          let decoded = jwt(data.token);
+          console.log(decoded);
+          setPermission(decoded.permission);
+          setToken(data.token);
+          setIsLoggedIn(true);
+          console.log("TOKEN IS: " + data.token);
+          // Test the token
+          fetch("/protected", {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${data.token}`
+            }
+          })
+            .then((res) => res.json())
+            .then((data) => {
+              console.log(data);
+            }
+            )
+            .catch((error) => {
+              console.error("Error:", error);
+            }
+            );
         } else {
-            console.log("Invalid username or password")
-            alert("Invalid credentials.")
-            setIsLoggedIn(false);
+          console.log("Invalid username or password")
+          alert("Invalid credentials.")
+          setIsLoggedIn(false);
         }
       })
       .catch((error) => {
         console.error("Error:", error);
       });
-  }
+
+
+  };
 
   if (isLoggedIn) {
     return <div>You are logged in with token: {token}</div>;

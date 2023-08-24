@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+const jwt = require("jsonwebtoken");
 
 const PORT = 3001;
 
@@ -15,8 +16,11 @@ function isValidUser(providedUsername, providedPassword){
     let users = rawdata.toString().split("\n");
     for (let user of users){
         const [team, name, permission, username, password] = user.split(",");
-        return (providedUsername === username && providedPassword === password);
+        if (providedUsername === username && providedPassword === password) {
+            return [true, permission]; 
+        }
     }
+    return [false, "none"];
 }
 
 
@@ -25,7 +29,8 @@ function authenticate(req, res, next){
     const {authorization} = req.headers;
     if (authorization){
         const token = authorization.split(" ")[1];
-        if (token === "bigballshd4kmegamax"){
+        const decoded = jwt.verify(token, "secretKey");
+        if (decoded){
             next();
         } else {
             res.json({error: "invalid"});
@@ -47,12 +52,14 @@ app.get("/api", (req, res) => {
 
 app.post('/login', (req, res) => {
     const {username, password} = req.body; 
+    const [isValid, permission] = isValidUser(username, password);
     
-    if (isValidUser(username, password)){   
-        res.json({token: "bigballshd4kmegamax"}); 
+    if (isValid){   
+        const token = jwt.sign({username: username, permission: permission}, "secretKey"); 
+        res.json({token: token}); 
     } else {
         res.json({token: "invalid"});
-        // res.status(401).json({error: "Invalid Username or Password"});
+        res.status(401).json({error: "Invalid Username or Password"});
     }
 });
 
