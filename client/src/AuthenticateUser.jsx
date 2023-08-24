@@ -69,12 +69,13 @@ function Login() {
   if (isLoggedIn) {
     return <div>
       {/** <add an image  */}
-      <img src={Logo} alt="Logo" />
       <h1>Welcome {name} on team {team}!</h1>
       <p>You are logged in with token: {token}</p>
       </div>;
   }
   return (
+    <><img src={Logo} alt="Logo" />
+    <h1>STL Robotics Attendance Login</h1>
     <form onSubmit={handleSubmit}>
       <label>
         Username:
@@ -95,7 +96,7 @@ function Login() {
       </label>
       <br />
       <button type="submit">Login</button>
-    </form>
+    </form></>
   );
 }
 
