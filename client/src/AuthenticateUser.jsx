@@ -4,6 +4,10 @@ import "./App.css";
 import "./index.css";
 import Logo from "./roboticsLog.png";
 
+import Exec from "./Exec";
+import Captain from "./Captain";
+import Member from "./Member";
+
 function Login() {
   const [username, setUsername] = useState("");
   const [name , setName] = useState("");
@@ -63,11 +67,26 @@ function Login() {
       .catch((error) => {
         console.error("Error:", error);
       });
-
-
   };
 
   if (isLoggedIn) {
+    switch (permission) {
+      case "exec": 
+        console.log("exec"); 
+        return (<Exec />);
+        break;
+      case "captain":
+        console.log("captain");
+        return (<Captain />);
+        break;
+      case "member":
+        console.log("member");
+        return (<Member />);
+        break;
+      default:
+        {alert("what the fuck man")}
+        break;
+    }
     return <div>
       {/** <add an image  */}
       <h1>Welcome {name} on team {team}!</h1>

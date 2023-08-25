@@ -9,9 +9,26 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+
+function returnMemberList(username, team, permission){
+    // If executive access everyone
+    // If captain only access team
+    // If member only access self 
+    let fs = require('fs');
+    let rawdata = fs.readFileSync('./src/users.csv');
+    let users = rawdata.toString().split("\n");
+    let memberList = [];
+    for (let user of users){
+        const [userTeam, name, userPermission, userUsername, userPassword] = user.split(",");
+        if (permission == "executive" || (permission == "captain" && team == userTeam) || (permission == "member" && username == userUsername)){
+            memberList.push({name: name, team: userTeam, permission: userPermission, username: userUsername});
+        }
+    }
+    return memberList;
+}
+
 function isValidUser(providedUsername, providedPassword){
     // Open comma seperated values file
-
     let fs = require('fs');
     let rawdata = fs.readFileSync('./src/users.csv');
     let users = rawdata.toString().split("\n");
@@ -24,8 +41,6 @@ function isValidUser(providedUsername, providedPassword){
     }
     return [false, "none"];
 }
-
-
 
 function authenticate(req, res, next){
     const {authorization} = req.headers;
@@ -54,11 +69,12 @@ app.get("/api", (req, res) => {
 app.post('/login', (req, res) => {
     const {username, password} = req.body; 
     const [isValid, permission, name, team] = isValidUser(username, password);
-    
+
 
     if (isValid){   
         const token = jwt.sign({username: username, permission: permission, name: name, team: team}, "secretKey"); 
-        res.json({token: token}); 
+        const memberList = returnMemberList(username, team, permission);
+        res.json({token: token, memberList: memberList});
     } else {
         res.json({token: "invalid"});
         // res.status(401).json({error: "Invalid Username or Password"});
