@@ -80,17 +80,14 @@ function Login() {
       case "exec": 
         console.log("exec"); 
         return (<Exec name={name} team={team} permission={permission} token={token} memberList={memberList}/>);
-        break;
       case "captain":
         console.log("captain");
         return (<Captain name={name}  team={team} permission={permission} token={token} memberList={memberList}/>);
-        break;
       case "member":
         console.log("member");
         return (<Member />);
-        break;
       default:
-        {alert("what the fuck man")}
+        alert("what the fuck man")
         break;
     }
     return <div>
