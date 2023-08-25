@@ -17,8 +17,7 @@ function isValidUser(providedUsername, providedPassword){
     let users = rawdata.toString().split("\n");
     for (let user of users){
         const [team, name, permission, username, password] = user.split(",");
-        console.log(JSON.stringify(providedUsername) + " " + JSON.stringify(username) + " " + JSON.stringify(providedPassword) + " " + JSON.stringify(password));
-        if (providedUsername == username && providedPassword == password) {
+        if (providedUsername == username.trimEnd() && providedPassword == password.trimEnd()) {
             return [true, permission, name, team]; 
         }
     }
