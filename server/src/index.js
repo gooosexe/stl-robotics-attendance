@@ -57,8 +57,7 @@ app.post('/login', (req, res) => {
         const token = jwt.sign({username: username, permission: permission, name: name, team: team}, "secretKey"); 
         res.json({token: token}); 
     } else {
-        res.json({token: "invalid"});
-        res.status(401).json({error: "Invalid Username or Password"});
+        res.status(401).json({token: "invalid"}, {error: "Invalid Username or Password"});
     }
 });
 
