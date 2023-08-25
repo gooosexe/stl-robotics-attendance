@@ -14,6 +14,7 @@ function Login() {
   const [token, setToken] = useState("");
 
   const handleSubmit = (event) => {
+    console.log(username, password);
     event.preventDefault();
     fetch("/login", {
       method: "POST",

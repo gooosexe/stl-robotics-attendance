@@ -11,12 +11,16 @@ app.use(express.json());
 
 function isValidUser(providedUsername, providedPassword){
     // Open comma seperated values file
+    console.log(`Provided username: <${providedUsername}>, <${providedPassword}>`);
+
+
     let fs = require('fs');
     let rawdata = fs.readFileSync('./src/users.csv');
     let users = rawdata.toString().split("\n");
     for (let user of users){
         const [team, name, permission, username, password] = user.split(",");
-        if (providedUsername === username && providedPassword === password) {
+        console.log(`$${username}$, $${password}$`);
+        if (providedUsername == username && providedPassword == password) {
             return [true, permission, name, team]; 
         }
     }
@@ -53,11 +57,13 @@ app.post('/login', (req, res) => {
     const {username, password} = req.body; 
     const [isValid, permission, name, team] = isValidUser(username, password);
     
+
     if (isValid){   
         const token = jwt.sign({username: username, permission: permission, name: name, team: team}, "secretKey"); 
         res.json({token: token}); 
     } else {
-        res.status(401).json({token: "invalid"}, {error: "Invalid Username or Password"});
+        res.json({token: "invalid"});
+        // res.status(401).json({error: "Invalid Username or Password"});
     }
 });
 
