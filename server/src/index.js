@@ -11,15 +11,13 @@ app.use(express.json());
 
 function isValidUser(providedUsername, providedPassword){
     // Open comma seperated values file
-    console.log(`Provided username: <${providedUsername}>, <${providedPassword}>`);
-
 
     let fs = require('fs');
     let rawdata = fs.readFileSync('./src/users.csv');
     let users = rawdata.toString().split("\n");
     for (let user of users){
         const [team, name, permission, username, password] = user.split(",");
-        console.log(`$${username}$, $${password}$`);
+        console.log(JSON.stringify(providedUsername) + " " + JSON.stringify(username) + " " + JSON.stringify(providedPassword) + " " + JSON.stringify(password));
         if (providedUsername == username && providedPassword == password) {
             return [true, permission, name, team]; 
         }
