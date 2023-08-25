@@ -34,7 +34,6 @@ function authenticate(req, res, next){
             next();
         } else {
             res.json({error: "invalid"});
-            res.status(403).json({error: "Forbidden ;)"});
         }
     } else {
         res.status(401).json({error: "Unauthorized"});
