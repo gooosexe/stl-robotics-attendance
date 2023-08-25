@@ -14,13 +14,14 @@ function returnMemberList(username, team, permission){
     // If executive access everyone
     // If captain only access team
     // If member only access self 
+    console.log(username, team, permission); 
     let fs = require('fs');
     let rawdata = fs.readFileSync('./src/users.csv');
     let users = rawdata.toString().split("\n");
     let memberList = [];
     for (let user of users){
         const [userTeam, name, userPermission, userUsername, userPassword] = user.split(",");
-        if (permission == "executive" || (permission == "captain" && team == userTeam) || (permission == "member" && username == userUsername)){
+        if (permission == "exec" || (permission == "captain" && team == userTeam) || (permission == "member" && username == userUsername)){
             memberList.push({name: name, team: userTeam, permission: userPermission, username: userUsername});
         }
     }
@@ -34,7 +35,6 @@ function isValidUser(providedUsername, providedPassword){
     let users = rawdata.toString().split("\n");
     for (let user of users){
         const [team, name, permission, username, password] = user.split(",");
-        console.log(JSON.stringify(providedUsername) + " " + JSON.stringify(username) + " " + JSON.stringify(providedPassword) + " " + JSON.stringify(password));
         if (providedUsername == username && providedPassword == password) {
             return [true, permission, name, team]; 
         }
@@ -72,12 +72,12 @@ app.post('/login', (req, res) => {
 
 
     if (isValid){   
-        const token = jwt.sign({username: username, permission: permission, name: name, team: team}, "secretKey"); 
         const memberList = returnMemberList(username, team, permission);
+        console.log(memberList); 
+        const token = jwt.sign({username: username, permission: permission, name: name, team: team, memberList: memberList}, "secretKey"); 
         res.json({token: token, memberList: memberList});
     } else {
         res.json({token: "invalid"});
-        // res.status(401).json({error: "Invalid Username or Password"});
     }
 });
 
