@@ -17,15 +17,16 @@ function returnMemberList(username, team, permission) {
   let fs = require("fs");
   let rawdata = fs.readFileSync("./src/users.csv");
   let users = rawdata.toString().split("\n");
-  let memberList = [];
+  let memberList = []; // list of members to return
+
   for (let user of users) {
-    const [userTeam, name, userPermission, userUsername, userPassword] =
-      user.split(",");
+    const [userTeam, name, userPermission, userUsername, userPassword] = user.split(",");
     if (
       permission == "exec" ||
       (permission == "captain" && team == userTeam) ||
       (permission == "member" && username == userUsername)
     ) {
+      // pushes a member json object to the memberList
       memberList.push({
         name: name,
         team: userTeam,
@@ -91,6 +92,7 @@ app.post("/login", (req, res) => {
       },
       "secretKey"
     );
+    // return token and list
     res.json({ token: token, memberList: memberList });
   } else {
     res.json({ token: "invalid" });

@@ -2,6 +2,11 @@ import "./App.css";
 import "./index.css";
 import React from "react";
 
+// for changing the sign in/out button
+function changeButtonStatus(name, team) {
+  console.log(`${name} ${team}`);
+}
+
 function GetMemberList(props) {
   const { memberList } = props;
   if (!Array.isArray(memberList)) {
@@ -24,100 +29,101 @@ function GetMemberList(props) {
     let name = memberList[i].name;
     let team = memberList[i].team;
 
-    if (team === "T") {
-      list.push(
-        <>
-          <p style={{ color: "#5b82c2" }}>
-            {name} {team}{" "}
-            <button
-              type="submit"
-              onClick={() => console.log(name + " " + team)}
-            >
-              Sign In / Out
-            </button>
-          </p>
-        </>
+    switch (team) {
+      case "T":
+        list.push(
+          <tr>
+            <td>{team}</td>
+            <td>{name}</td>
+            <td>
+              <button type="button" onClick={changeButtonStatus(name, team)}>
+                Sign In / Out
+              </button>
+            </td>
+          </tr>
+        );
+        break;
+      case "S":
+        list.push(
+          <tr>
+            <td>{team}</td>
+            <td>{name}</td>
+            <td>
+              <button type="button" onClick={changeButtonStatus(name, team)}>
+                Sign In / Out
+              </button>
+            </td>
+          </tr>
+        );
+        break;
+      case "X":
+        list.push(
+          <tr>
+            <td>{team}</td>
+            <td>{name}</td>
+            <td>
+              <button type="button" onClick={changeButtonStatus(name, team)}>
+                Sign In / Out
+              </button>
+            </td>
+          </tr>
+        );
+        break;
+      case "Y":
+        list.push(
+          <tr>
+            <td>{team}</td>
+            <td>{name}</td>
+            <td>
+              <button type="button" onClick={changeButtonStatus(name, team)}>
+                Sign In / Out
+              </button>
+            </td>
+          </tr>
+        );
+        break;
+      case "Z":
+        list.push(
+          <tr>
+            <td>{team}</td>
+            <td>{name}</td>
+            <td>
+              <button type="button" onClick={changeButtonStatus(name, team)}>
+                Sign In / Out
+              </button>
+            </td>
+          </tr>
       );
-    } else if (team === "S") {
-      list.push(
-        <>
-          <p style={{ color: "#c25b5b" }}>
-            {name} {team}{" "}
-            <button
-              type="submit"
-              onClick={() => console.log(name + " " + team)}
-            >
-              Sign In / Out
-            </button>
-          </p>
-        </>
-      );
-    } else if (team === "X") {
-      list.push(
-        <>
-          <p style={{ color: "#c2b05b" }}>
-            {name} {team}{" "}
-            <button
-              type="submit"
-              onClick={() => console.log(name + " " + team)}
-            >
-              Sign In / Out
-            </button>
-          </p>
-        </>
-      );
-    } else if (team === "Y") {
-      list.push(
-        <>
-          <p style={{ color: "#5bc2b0" }}>
-            {name} {team}{" "}
-            <button
-              type="submit"
-              onClick={() => console.log(name + " " + team)}
-            >
-              Sign In / Out
-            </button>
-          </p>
-        </>
-      );
-    } else if (team === "Z") {
-      list.push(
-        <>
-          <p style={{ color: "#c25bb0" }}>
-            {name} {team}{" "}
-            <button
-              type="submit"
-              onClick={() => console.log(name + " " + team)}
-            >
-              Sign In / Out
-            </button>
-          </p>
-        </>
-      );
-    } else if (team === "G") {
-      list.push(
-        <>
-          <p style={{ color: "#5bc2b0" }}>
-            {name} {team}{" "}
-            <button
-              type="submit"
-              onClick={() => console.log(name + " " + team)}
-            >
-              Sign In / Out
-            </button>
-          </p>
-        </>
-      );
+      break;
+      case "G":
+        list.push(
+          <tr>
+            <td>{team}</td>
+            <td>{name}</td>
+            <td>
+              <button type="button" onClick={changeButtonStatus(name, team)}>
+                Sign In / Out
+              </button>
+            </td>
+          </tr>
+        );
+        break;
+      default:
+        console.log(`Error: ${name} ${team} is not a valid team.`);
     }
 
-    // list.push(<>
-    //     <p>{name} {team}  <button type="submit" onClick={() => console.log(name + " " + team)}>Sign In / Out</button></p>
-
-    //     {/*add a space between this person and the next*/}
-
-    // </>)
   }
-  return <ul>{list}</ul>;
+
+  return (
+    <table>
+      <tr>
+        <th>Team</th>
+        <th>Name</th>
+        <th>Sign In / Out</th>
+      </tr>
+      {list}
+    </table>
+  );
 }
 
 function Captain(props) {
