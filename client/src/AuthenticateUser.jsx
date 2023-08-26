@@ -16,6 +16,7 @@ function Login() {
   const [permission, setPermission] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [token, setToken] = useState("");
+  const [memberList, setMemberList] = useState([]);
 
   const handleSubmit = (event) => {
     console.log(username, password);
@@ -38,8 +39,13 @@ function Login() {
           setIsLoggedIn(true);
           setName(decoded.name);
           setTeam(decoded.team);
+          setMemberList(decoded.memberList);
 
           console.log("TOKEN IS: " + data.token);
+          console.log("PERMISSION IS: " + decoded.permission);
+          console.log("NAME IS: " + decoded.name);
+          console.log("TEAM IS: " + decoded.team);
+          console.log("MEMBERLIST IS: " + decoded.memberList);
 
           // Test the token
           fetch("/protected", {
@@ -73,18 +79,15 @@ function Login() {
     switch (permission) {
       case "exec": 
         console.log("exec"); 
-        return (<Exec />);
-        break;
+        return (<Exec name={name} team={team} permission={permission} token={token} memberList={memberList}/>);
       case "captain":
         console.log("captain");
-        return (<Captain />);
-        break;
+        return (<Captain name={name}  team={team} permission={permission} token={token} memberList={memberList}/>);
       case "member":
         console.log("member");
         return (<Member />);
-        break;
       default:
-        {alert("what the fuck man")}
+        alert("what the fuck man")
         break;
     }
     return <div>
