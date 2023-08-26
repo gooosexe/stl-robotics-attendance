@@ -140,8 +140,7 @@ function Exec(props) {
   return (
     <div>
       <h1>
-        Welcome <a style={{ color: "yellow" }}>{name}</a> from{" "}
-        <a style={{ color: "yellow" }}>82855{team}</a>
+        Welcome <span style={{ color: "yellow" }} >{name}</span> from <span style={{ color: "yellow" }}>82855{team}</span>
       </h1>
       <GetMemberList memberList={memberList} />
     </div>
