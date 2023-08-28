@@ -7,42 +7,111 @@ const changeButtonStatus = (name, team) => {
   console.log(`${name} ${team}`);
 }
 
-function getMemberStatus(name, token) {
-  // Returns sign in if the user is signed out
-  // Returns sign out if the user is signed in
-  fetch("/status", {
+function signIn(name, team, token) {
+  console.log(`${name} ${team}`);
+  fetch("/signIn", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       "Authorization": `Bearer ${token}`
     },
-    body: JSON.stringify({ name })
+    body: JSON.stringify({ name, team })
   })
     .then((res) => res.json())
     .then((data) => {
-      if (data.status === "signedIn") {
-        return "Sign Out";
-      } else if (data.status === "signedOut") {
-        return "Sign In";
+      console.log(data);
+    });
+
+}
+
+function signOut(name, team) {
+  console.log(`${name} ${team}`);
+}
+
+async function getMemberStatus(name, token) {
+  // Returns sign in if the user is signed out
+  // Returns sign out if the user is signed inc
+  let status = "Error: Could not get status";
+  
+  status = await new Promise((resolve, reject) => {
+    fetch("/status", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+      },
+      body: JSON.stringify({ name })
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        status = data.status;
+        if (JSON.stringify(status) === JSON.stringify("signedOut")) {
+          status = "Sign In";
+        }
+        else if (JSON.stringify(status) === JSON.stringify("signedIn")) {
+          status = "Sign Out";
+        }
+        return resolve(status);
+        console.log(status);
+    
       }
-    }
-    );
+      );
+  });
+  return status; 
 }
 
 function CreateMemberEntry(props) {
   const { team, name, token } = props;
-  getMemberStatus(name, token);
-  var buttonText = getMemberStatus(name, token);
-  return (
-    <tr>
-      <td>{name}</td>
-      <td>
-        <button type="button" onClick={() => changeButtonStatus(name, team)}>
-          Sign In / Out
-        </button>
-      </td>
-    </tr>
-  );
+  const [status, setStatus] = React.useState("Loading...");
+  
+  const getStatus = () => {
+    getMemberStatus(name, token).then((status) => {
+      console.log("Getting status"); 
+      setStatus(status);
+    });
+  };
+
+  React.useEffect(() => {
+    getStatus();
+    const intervalId = setInterval(getStatus, 1000);
+    return () => clearInterval(intervalId);
+  }, [name, token]);
+
+  if (status == "Loading...") {
+    return ( // thats how we do it
+      <tr>
+        <td>{name}</td>
+        <td>
+          <button type="button" style={{backgroundColor: "#ffcc00", color: "#000000"}} onClick={() => changeButtonStatus(name, team, token)}>
+            {status}
+          </button>
+        </td>
+      </tr>
+    );
+  } else if (status == "Sign In") {
+    return (
+      <tr>
+        <td>{name}</td>
+        <td>
+          <button type="button" style={{backgroundColor: "#4b8a3e"}} onClick={() => signIn(name, team, token)}>
+            {status}
+          </button>
+        </td>
+      </tr>
+    );
+  } else if (status == "Sign Out") {
+    return (
+      <tr>
+        <td>{name}</td>
+        <td>
+          <button type="button" style={{backgrounColor: "red"}} onClick={() => signOut(name, team, token)}>
+            {status}
+          </button>
+        </td>
+      </tr>
+    );
+  }
+  
 }
 
 function GetMemberList(props) {

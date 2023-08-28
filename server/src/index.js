@@ -52,6 +52,12 @@ function isValidUser(providedUsername, providedPassword) {
   return [false, "none"];
 }
 
+/**
+ * This function will check if the user is authenticated, will stop the request if not valid 
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ */
 function authenticate(req, res, next) {
   const { authorization } = req.headers;
   if (authorization) {
@@ -67,6 +73,10 @@ function authenticate(req, res, next) {
   }
 }
 
+/**
+ * This function will return the status of the user 
+ * Either signedIn or signedOut
+ */
 app.post("/status", authenticate, (req, res) => {
   const {name} = req.body; // Get the name of the user that we want the status of
 
