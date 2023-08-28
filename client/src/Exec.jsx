@@ -7,8 +7,32 @@ const changeButtonStatus = (name, team) => {
   console.log(`${name} ${team}`);
 }
 
+function getMemberStatus(name, token) {
+  // Returns sign in if the user is signed out
+  // Returns sign out if the user is signed in
+  fetch("/status", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}`
+    },
+    body: JSON.stringify({ name })
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      if (data.status === "signedIn") {
+        return "Sign Out";
+      } else if (data.status === "signedOut") {
+        return "Sign In";
+      }
+    }
+    );
+}
+
 function CreateMemberEntry(props) {
-  const { team, name } = props;
+  const { team, name, token } = props;
+  getMemberStatus(name, token);
+  var buttonText = getMemberStatus(name, token);
   return (
     <tr>
       <td>{name}</td>
@@ -22,7 +46,7 @@ function CreateMemberEntry(props) {
 }
 
 function GetMemberList(props) {
-  const { memberList } = props;
+  const { memberList, token } = props;
   if (!Array.isArray(memberList)) {
     return <p>Member list is not available.</p>;
   }
@@ -34,26 +58,26 @@ function GetMemberList(props) {
   let tTeam = [];
   let sTeam = [];
 
-  console.log(memberList); 
+  console.log(memberList);
   memberList.forEach((member) => {
     switch (member.team) {
       case "T":
-        tTeam.push(<CreateMemberEntry team={member.team} name={member.name} />);
+        tTeam.push(<CreateMemberEntry team={member.team} name={member.name} token={token}/>);
         break;
       case "S":
-        sTeam.push(<CreateMemberEntry team={member.team} name={member.name} />);
+        sTeam.push(<CreateMemberEntry team={member.team} name={member.name} token={token}/>);
         break;
       case "X":
-        xTeam.push(<CreateMemberEntry team={member.team} name={member.name} />);
+        xTeam.push(<CreateMemberEntry team={member.team} name={member.name} token={token}/>);
         break;
       case "Y":
-        yTeam.push(<CreateMemberEntry team={member.team} name={member.name} />);
+        yTeam.push(<CreateMemberEntry team={member.team} name={member.name} token={token}/>);
         break;
       case "Z":
-        zTeam.push(<CreateMemberEntry team={member.team} name={member.name}/>);
+        zTeam.push(<CreateMemberEntry team={member.team} name={member.name} token={token}/>);
         break;
       case "G":
-        gTeam.push(<CreateMemberEntry team={member.team} name={member.name}/>);
+        gTeam.push(<CreateMemberEntry team={member.team} name={member.name} token={token}/>);
         break;
       default:
         console.log(`Error: ${member.name} ${member.team} is not a valid team.`);
@@ -107,7 +131,7 @@ function GetMemberList(props) {
   );
 }
 
-    
+
 function Exec(props) {
   const { name, team, permission, token, memberList } = props;
 
@@ -116,7 +140,7 @@ function Exec(props) {
       <h1>
         Welcome <span style={{ color: "yellow" }} >{name}</span> from <span style={{ color: "yellow" }}>82855{team}</span>
       </h1>
-      <GetMemberList memberList={memberList} />
+      <GetMemberList memberList={memberList} token={token} />
     </div>
   );
 }

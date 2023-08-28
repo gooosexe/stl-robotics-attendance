@@ -67,6 +67,33 @@ function authenticate(req, res, next) {
   }
 }
 
+app.post("/status", authenticate, (req, res) => {
+  const {name} = req.body; // Get the name of the user that we want the status of
+
+  // Open timecards.csv file
+  let fs = require("fs");
+  let rawdata = fs.readFileSync("./src/timecards.csv");
+  let timecards = rawdata.toString().split("\n");
+
+  // Check if the user has a timecard
+  for (let timecard of timecards) {
+    const [user, timeIn, timeOut, day, signedInBy, signedOutBy] = timecard.split(",");
+    if (user == name) {
+      // Check if the timecard has an ending 
+      if (timeOut == "") {
+        // If the timecard has no ending, the user is signed in
+        res.json({status: "signedIn"});
+      } else {
+        // If the timecard has an ending, the user is signed out
+        res.json({status: "signedOut"});
+      }
+    }
+  }
+  // If the user has no timecard, they are not signed in
+  res.json({status: "signedOut"});  
+});
+
+
 app.get("/protected", authenticate, (req, res) => {
   res.json({ message: "You are authorized" });
 });
