@@ -103,7 +103,6 @@ app.post("/status", authenticate, (req, res) => {
   res.json({status: "signedOut"});  
 });
 
-
 app.get("/protected", authenticate, (req, res) => {
   res.json({ message: "You are authorized" });
 });
@@ -134,6 +133,14 @@ app.post("/login", (req, res) => {
   } else {
     res.json({ token: "invalid" });
   }
+});
+
+app.post("/signIn", (req, res) => {
+
+});
+
+app.post("/signOut", (req, res) => {
+
 });
 
 app.listen(PORT, () => {

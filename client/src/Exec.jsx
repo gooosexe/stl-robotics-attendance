@@ -2,11 +2,6 @@ import "./App.css";
 import "./index.css";
 import React from "react";
 
-// for changing the sign in/out button
-const changeButtonStatus = (name, team) => {
-  console.log(`${name} ${team}`);
-}
-
 function signIn(name, team, token) {
   console.log(`${name} ${team}`);
   fetch("/signIn", {
@@ -24,8 +19,21 @@ function signIn(name, team, token) {
 
 }
 
-function signOut(name, team) {
+function signOut(name, team, token) {
   console.log(`${name} ${team}`);
+  fetch("/signOut", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}`
+    },
+    body: JSON.stringify({ name, team })
+  }) 
+    .then((res) => res.json())
+    .then((data) => {
+      console.log(data);
+    }
+    );
 }
 
 async function getMemberStatus(name, token) {
@@ -82,7 +90,7 @@ function CreateMemberEntry(props) {
       <tr>
         <td>{name}</td>
         <td>
-          <button type="button" style={{backgroundColor: "#ffcc00", color: "#000000"}} onClick={() => changeButtonStatus(name, team, token)}>
+          <button type="button" style={{backgroundColor: "#ffcc00", color: "#000000"}}>
             {status}
           </button>
         </td>
