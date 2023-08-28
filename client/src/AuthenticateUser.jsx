@@ -85,9 +85,9 @@ function Login() {
         return (<Captain name={name}  team={team} permission={permission} token={token} memberList={memberList}/>);
       case "member":
         console.log("member");
-        return (<Member />);
+        return (<Member name={name} team={team} permission={permission} token={token}/>);
       default:
-        alert("what the fuck man")
+        alert("Not sure how you got here.")
         break;
     }
     return <div>

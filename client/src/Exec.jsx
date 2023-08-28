@@ -7,133 +7,107 @@ const changeButtonStatus = (name, team) => {
   console.log(`${name} ${team}`);
 }
 
+function CreateMemberEntry(props) {
+  const { team, name } = props;
+  return (
+    <tr>
+      <td>{name}</td>
+      <td>
+        <button type="button" onClick={() => changeButtonStatus(name, team)}>
+          Sign In / Out
+        </button>
+      </td>
+    </tr>
+  );
+}
+
 function GetMemberList(props) {
   const { memberList } = props;
   if (!Array.isArray(memberList)) {
     return <p>Member list is not available.</p>;
   }
 
-  // Sort memberList by team
-  memberList.sort((a, b) => {
-    if (a.team < b.team) {
-      return -1;
-    }
-    if (a.team > b.team) {
-      return 1;
-    }
-    return 0;
-  });
+  let xTeam = [];
+  let yTeam = [];
+  let zTeam = [];
+  let gTeam = [];
+  let tTeam = [];
+  let sTeam = [];
 
-  let list = [];
-  for (let i = 0; i < memberList.length; i++) {
-    let name = memberList[i].name;
-    let team = memberList[i].team;
-
-    switch (team) {
+  console.log(memberList); 
+  memberList.forEach((member) => {
+    switch (member.team) {
       case "T":
-        list.push(
-          <tr>
-            <td>{team}</td>
-            <td>{name}</td>
-            <td>
-              <button type="button" onClick={() => changeButtonStatus(name, team)}>
-                Sign In / Out
-              </button>
-            </td>
-          </tr>
-        );
+        tTeam.push(<CreateMemberEntry team={member.team} name={member.name} />);
         break;
       case "S":
-        list.push(
-          <tr>
-            <td>{team}</td>
-            <td>{name}</td>
-            <td>
-              <button type="button" onClick={() => changeButtonStatus(name, team)}>
-                Sign In / Out
-              </button>
-            </td>
-          </tr>
-        );
+        sTeam.push(<CreateMemberEntry team={member.team} name={member.name} />);
         break;
       case "X":
-        list.push(
-          <tr>
-            <td>{team}</td>
-            <td>{name}</td>
-            <td>
-              <button type="button" onClick={() => changeButtonStatus(name, team)}>
-                Sign In / Out
-              </button>
-            </td>
-          </tr>
-        );
+        xTeam.push(<CreateMemberEntry team={member.team} name={member.name} />);
         break;
       case "Y":
-        list.push(
-          <tr>
-            <td>{team}</td>
-            <td>{name}</td>
-            <td>
-              <button type="button" onClick={() => changeButtonStatus(name, team)}>
-                Sign In / Out
-              </button>
-            </td>
-          </tr>
-        );
+        yTeam.push(<CreateMemberEntry team={member.team} name={member.name} />);
         break;
       case "Z":
-        list.push(
-          <tr>
-            <td>{team}</td>
-            <td>{name}</td>
-            <td>
-              <button type="button" onClick={() => changeButtonStatus(name, team)}>
-                Sign In / Out
-              </button>
-            </td>
-          </tr>
-      );
-      break;
+        zTeam.push(<CreateMemberEntry team={member.team} name={member.name}/>);
+        break;
       case "G":
-        list.push(
-          <tr>
-            <td>{team}</td>
-            <td>{name}</td>
-            <td>
-              <button type="button" onClick={() => changeButtonStatus(name, team)}>
-                Sign In / Out
-              </button>
-            </td>
-          </tr>
-        );
+        gTeam.push(<CreateMemberEntry team={member.team} name={member.name}/>);
         break;
       default:
-        console.log(`Error: ${name} ${team} is not a valid team.`);
+        console.log(`Error: ${member.name} ${member.team} is not a valid team.`);
+        break;
     }
-
-    // list.push(<>
-    //     <p>{name} {team}  <button type="submit" onClick={() => changeButtonStatus(name, team)}>Sign In / Out</button></p>
-
-    //     {/*add a space between this person and the next*/}
-
-    // </>)
-  }
-
-  console.log(list);
+  });
 
   return (
-    <table>
-      <tr>
-        <th>Team</th>
-        <th>Name</th>
-        <th>Sign In / Out</th>
-      </tr>
-      {list}
-    </table>
+    <>
+      <div className="gTeam">
+        <h2>82855G</h2>
+        <table>
+          <tr>
+          </tr>
+          {gTeam}
+        </table>
+      </div>
+      <div className="tTeam">
+        <h2>82855T</h2>
+        <table>
+          <tr>
+          </tr>
+          {tTeam}
+        </table>
+      </div>
+      <div className="sTeam">
+        <h2>82855S</h2>
+        <table>
+          {sTeam}
+        </table>
+      </div>
+      <div className="xTeam">
+        <h2>82855X</h2>
+        <table>
+          {xTeam}
+        </table>
+      </div>
+      <div className="yTeam">
+        <h2>82855Y</h2>
+        <table>
+          {yTeam}
+        </table>
+      </div>
+      <div className="zTeam">
+        <h2>82855Z</h2>
+        <table>
+          {zTeam}
+        </table>
+      </div>
+    </ >
   );
 }
 
+    
 function Exec(props) {
   const { name, team, permission, token, memberList } = props;
 

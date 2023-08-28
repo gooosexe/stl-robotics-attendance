@@ -55,23 +55,13 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
-th, td {
-  border: 2px solid #a1a1a1;
+td {
   padding: 0.6em 1.2em;
   border-collapse: collapse;
 }
 
 table {
-  border: 2px solid transparent;
-  border-radius: 20px;
-  padding: 50px;
   margin: auto;
-  background-color: #202020;
-}
-
-/* for the member's big button */
-big-button {
-
 }
 
 @media (prefers-color-scheme: light) {
