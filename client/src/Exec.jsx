@@ -5,58 +5,107 @@ import React from "react";
 /**
  * Updates the memberStatuses dictionary at a set interval
  */
-async function updateStatuses(token){
-  let memberStatuses = {};
+async function updateStatuses(token, setStatusList) {
   await fetch("/allStatus", {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
       "Authorization": `Bearer ${token}`
-    }})
+    }
+  })
     .then((res) => res.json())
     .then((data) => {
-      console.log(`Data from server: ${data.statusDict}`);
-      var memberStatuses = data.statusDict;
+      setStatusList(data.statusDict);
+      console.log(`Done updating statuses`);
     });
-    console.log("try ", memberStatuses); 
-    return memberStatuses;
 }
 
 /**
  * Returns the status of members from the memberStatuses dictionary
  */
-function getMemberStatus(member, statusList){
+function getMemberStatus(member, statusList) {
   return statusList[member];
 }
+
+async function signOut(token, member){
+  console.log(`Signing out ${member}...`);
+  await fetch("/signOut", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}`
+    },
+    body: JSON.stringify({member: member})
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      
+    })
+    .catch((err) => {
+      console.log(`Error: ${err}`);
+    }
+  );
+}
+
+async function signIn(token, member) {
+  console.log(`Signing in ${member}...`); 
+  await fetch("/signIn", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}`
+    },
+    body: JSON.stringify({member: member})
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      
+    })
+    .catch((err) => {
+      console.log(`Error: ${err}`);
+    }
+  );
+}    
 
 /**
  * Creates/updates a table entry for a member
  */
 function UpdateMemberEntry(props) {
-  const { team, name, token, statusList} = props;
+  const { name, team, token, statusList, setStatusList } = props;
+  const status = statusList[name];
+  const [isSigningIn, setIsSigningIn] = React.useState(false);
 
-  const status = getMemberStatus(name, statusList);  
+  let buttonText, buttonTextColor, buttonColor, buttonFunction;
 
-  let buttonText = "Loading..."; 
-  let buttonTextColor = "#000000";
-  let buttonColor = "#ffcc00";
-
-  
   switch (status) {
     case -1: // loading
+      console.log("Loading...");
       buttonText = "Loading...";
       buttonTextColor = "#000000"
       buttonColor = "#ffcc00";
+      buttonFunction = () => {alert("Please wait for the page to load.")};
       break;
     case 0: // signed out
       buttonText = "Sign in";
       buttonTextColor = "#ffffff";
       buttonColor = "#339933";
+      buttonFunction = () => {
+        setIsSigningIn(true);
+        signIn(token, name)
+           .then(() => {updateStatuses(token, setStatusList); setIsSigningIn(false)}) 
+           .finally(() => console.log("Done signing in " + name + "\n")); 
+      };
       break;
     case 1: // signed in
       buttonText = "Sign out";
       buttonTextColor = "#ffffff";
       buttonColor = "#cc0000";
+      buttonFunction = () => {
+        setIsSigningIn(true);
+        signOut(token, name)
+            .then(() => {updateStatuses(token, setStatusList); setIsSigningIn(false)})
+            .finally(() => console.log("Done signing out " + name + "\n"));
+      };
       break;
     default: // bruh
       buttonText = "No State";
@@ -67,7 +116,7 @@ function UpdateMemberEntry(props) {
     <tr>
       <td>{name}</td>
       <td>
-        <button type="button" style={{ backgroundColor: buttonColor, color: buttonTextColor }}>
+        <button type="button" style={{ backgroundColor: buttonColor, color: buttonTextColor }} onClick={buttonFunction} disabled={isSigningIn}>
           {buttonText}
         </button>
       </td>
@@ -80,11 +129,27 @@ function UpdateMemberEntry(props) {
  */
 function GetMemberList(props) {
   const { memberList, token } = props;
+  const [statusList, setStatusList] = React.useState({});
 
+  // This is how update statuses is called once when mounting the component
+  React.useEffect(() => {
+    console.log("Updating statuses...");
+    updateStatuses(token, setStatusList);
+
+    const intervalId = setInterval(() => {
+      console.log("Updating statuses...");
+      updateStatuses(token, setStatusList);
+    }, 5000);
+
+    return () => clearInterval(intervalId);
+  }, [token]);
+
+  // If memberList is not an array, return an error message
   if (!Array.isArray(memberList)) {
     return <p>Member list is not available.</p>;
   }
 
+  // Define team arrays
   let xTeam = [];
   let yTeam = [];
   let zTeam = [];
@@ -92,29 +157,26 @@ function GetMemberList(props) {
   let tTeam = [];
   let sTeam = [];
 
-  // Update statuses
-  let statusList = updateStatuses(token);
-  console.log(statusList); 
-
+  // Sort members into their respective teams
   memberList.forEach((member) => {
     switch (member.team) {
       case "T":
-        tTeam.push(<UpdateMemberEntry team={member.team} name={member.name} token={token} statusList={statusList}/>);
+        tTeam.push(<UpdateMemberEntry team={member.team} name={member.name} token={token} statusList={statusList} setStatusList={setStatusList}/>);
         break;
       case "S":
-        sTeam.push(<UpdateMemberEntry team={member.team} name={member.name} token={token} statusList={statusList}/>);
+        sTeam.push(<UpdateMemberEntry team={member.team} name={member.name} token={token} statusList={statusList} setStatusList={setStatusList}/>);
         break;
       case "X":
-        xTeam.push(<UpdateMemberEntry team={member.team} name={member.name} token={token} statusList={statusList}/>);
+        xTeam.push(<UpdateMemberEntry team={member.team} name={member.name} token={token} statusList={statusList} setStatusList={setStatusList}/>);
         break;
       case "Y":
-        yTeam.push(<UpdateMemberEntry team={member.team} name={member.name} token={token} statusList={statusList}/>);
+        yTeam.push(<UpdateMemberEntry team={member.team} name={member.name} token={token} statusList={statusList} setStatusList={setStatusList}/>);
         break;
       case "Z":
-        zTeam.push(<UpdateMemberEntry team={member.team} name={member.name} token={token} statusList={statusList}/>);
+        zTeam.push(<UpdateMemberEntry team={member.team} name={member.name} token={token} statusList={statusList} setStatusList={setStatusList}/>);
         break;
       case "G":
-        gTeam.push(<UpdateMemberEntry team={member.team} name={member.name} token={token} statusList={statusList}/>);
+        gTeam.push(<UpdateMemberEntry team={member.team} name={member.name} token={token} statusList={statusList} setStatusList={setStatusList}/>);
         break;
       default:
         console.log(`Error: ${member.name} ${member.team} is not a valid team.`);
@@ -122,6 +184,7 @@ function GetMemberList(props) {
     }
   });
 
+  // Return the html of the teams and their members
   return (
     <>
       <div className="gTeam">

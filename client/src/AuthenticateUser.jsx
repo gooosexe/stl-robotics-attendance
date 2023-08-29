@@ -41,7 +41,6 @@ function Login() {
           setTeam(decoded.team);
           setMemberList(decoded.memberList);
 
-          console.log("TOKEN IS: " + data.token);
           console.log("PERMISSION IS: " + decoded.permission);
           console.log("NAME IS: " + decoded.name);
           console.log("TEAM IS: " + decoded.team);

@@ -13,7 +13,6 @@ function returnMemberList(username, team, permission) {
   // If executive access everyone
   // If captain only access team
   // If member only access self
-  console.log(username, team, permission);
   let fs = require("fs");
   let rawdata = fs.readFileSync("./src/users.csv");
   let users = rawdata.toString().split("\n");
@@ -72,6 +71,86 @@ function authenticate(req, res, next) {
     res.status(401).json({ error: "Unauthorized" });
   }
 }
+
+app.post("/signIn", authenticate, (req, res) => {
+  console.log(req.body);
+  const name = req.body.member; 
+  // Get who it was signed by through the token
+  let token = req.headers.authorization.split(" ")[1];
+  const decoded = jwt.verify(token, "secretKey");
+  const signedInBy = decoded.name;
+  console.log("Signing in " + name + " by " + signedInBy);
+  res.json({ message: "Signed in " + name + " by " + signedInBy });
+
+  // Open timecards.csv file
+  let fs = require("fs");
+  let rawdata = fs.readFileSync("./src/timecards.csv");
+  let timecards = rawdata.toString().split("\n");
+  let found = false; // If the user has a timecard
+  let newTimecards = []; // New timecards to write to the file
+
+  // Loop through the timecards and check if the user has a timecard
+  for (let timecard of timecards) {
+    const [user, timeIn, timeOut, day, signedInBy, signedOutBy] = timecard.split(",");
+    if (user == name && timeOut == "") {
+      found = true;
+      newTimecards.push([user, timeIn, timeOut, signedInBy, signedOutBy].join(","));
+    } else {
+      newTimecards.push(timecard);
+    }
+  }
+
+  // The only case you add a new time card is if the user does not have one
+  if (!found) {
+    newTimecards.push([name, new Date().toLocaleString().replace(",", ""), "", new Date().toLocaleDateString(), signedInBy, ""].join(","));
+  }
+
+  // Write the new timecards to the file
+  fs.writeFileSync("./src/timecards.csv", newTimecards.join("\n"));
+
+  console.log("Signed in " + name + " by " + signedInBy);
+
+}); 
+
+app.post("/signOut", authenticate, (req, res) => {
+  console.log(req.body);
+  const name = req.body.member;
+  // Get who it was signed by through the token
+  let token = req.headers.authorization.split(" ")[1];
+  const decoded = jwt.verify(token, "secretKey");
+  const signedOutBy = decoded.name;
+  console.log("Signing out " + name + " by " + signedOutBy);
+  res.json({ message: "Signed out " + name + " by " + signedOutBy });
+
+  // Open timecards.csv file
+  let fs = require("fs");
+  let rawdata = fs.readFileSync("./src/timecards.csv");
+  let timecards = rawdata.toString().split("\n");
+  let found = false; // If the user has a timecard
+  let newTimecards = []; // New timecards to write to the file
+
+  // Loop through the timecards and check if the user has a timecard
+  for (let timecard of timecards) {
+
+    const [user, timeIn, timeOut, day, signedInBy, oldSignedOutBy] = timecard.split(",");
+    if (user == name) {
+      found = true;
+      newTimecards.push([user, timeIn, new Date().toLocaleString().replace(",", ""), day, signedInBy, signedOutBy].join(","));
+    } else {
+      newTimecards.push(timecard);
+    }
+  }
+
+  // If the user has no time card that means they were not signed in so do nothing
+  if (!found) {
+    return;
+  }
+
+  // Write the new timecards to the file
+  fs.writeFileSync("./src/timecards.csv", newTimecards.join("\n"));
+
+  console.log("Signed out " + name + " by " + signedOutBy);
+});
 
 /**
  * This function will return the status of the user 
@@ -144,14 +223,17 @@ app.get("/allStatus", authenticate, (req, res) => {
   res.json({statusDict: statusDict});
 });
 
+// This function just tests that the authentication works
 app.get("/protected", authenticate, (req, res) => {
   res.json({ message: "You are authorized" });
 });
 
+// This function just tests that the server is running
 app.get("/api", (req, res) => {
   res.json({ message: "Hello from server!" });
 });
 
+// This function will return the list of members based on the team and permission
 app.post("/login", (req, res) => {
   const { username, password } = req.body;
   const [isValid, permission, name, team] = isValidUser(username, password);
@@ -176,6 +258,7 @@ app.post("/login", (req, res) => {
   }
 });
 
+// This starts the server
 app.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);
 });

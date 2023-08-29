@@ -15,7 +15,9 @@ function App() {
   console.log(data); 
   
   return (
+    <>
     <AuthenticateUser />
+    </>
   );
 }
 
