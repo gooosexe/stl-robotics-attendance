@@ -133,9 +133,10 @@ app.post("/signOut", authenticate, (req, res) => {
   for (let timecard of timecards) {
 
     const [user, timeIn, timeOut, day, signedInBy, oldSignedOutBy] = timecard.split(",");
-    if (user == name) {
+    if (user == name && timeOut == "" && found == false) {
       found = true;
       newTimecards.push([user, timeIn, new Date().toLocaleString().replace(",", ""), day, signedInBy, signedOutBy].join(","));
+      
     } else {
       newTimecards.push(timecard);
     }
@@ -238,9 +239,13 @@ app.post("/login", (req, res) => {
   const { username, password } = req.body;
   const [isValid, permission, name, team] = isValidUser(username, password);
 
+  // Get ip address without using .connection
+  const ip = req.headers["x-forwarded-for"] || req.ip;
+  console.log("Login attempt from " + ip + " with username " + username);
+
   if (isValid) {
     const memberList = returnMemberList(username, team, permission);
-    console.log("Returning member list of size " + memberList.length); 
+    console.log("Login successful for " + username);
     const token = jwt.sign(
       {
         username: username,
