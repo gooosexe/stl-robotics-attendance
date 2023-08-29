@@ -2,128 +2,85 @@ import "./App.css";
 import "./index.css";
 import React from "react";
 
-function signIn(name, team, token) {
-  console.log(`${name} ${team}`);
-  fetch("/signIn", {
-    method: "POST",
+/**
+ * Updates the memberStatuses dictionary at a set interval
+ */
+async function updateStatuses(token){
+  let memberStatuses = {};
+  await fetch("/allStatus", {
+    method: "GET",
     headers: {
       "Content-Type": "application/json",
       "Authorization": `Bearer ${token}`
-    },
-    body: JSON.stringify({ name, team })
-  })
+    }})
     .then((res) => res.json())
     .then((data) => {
-      console.log(data);
+      console.log(`Data from server: ${data.statusDict}`);
+      var memberStatuses = data.statusDict;
     });
-
+    console.log("try ", memberStatuses); 
+    return memberStatuses;
 }
 
-function signOut(name, team, token) {
-  console.log(`${name} ${team}`);
-  fetch("/signOut", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "Authorization": `Bearer ${token}`
-    },
-    body: JSON.stringify({ name, team })
-  }) 
-    .then((res) => res.json())
-    .then((data) => {
-      console.log(data);
-    }
-    );
+/**
+ * Returns the status of members from the memberStatuses dictionary
+ */
+function getMemberStatus(member, statusList){
+  return statusList[member];
 }
 
-async function getMemberStatus(name, token) {
-  // Returns sign in if the user is signed out
-  // Returns sign out if the user is signed inc
-  let status = "Error: Could not get status";
+/**
+ * Creates/updates a table entry for a member
+ */
+function UpdateMemberEntry(props) {
+  const { team, name, token, statusList} = props;
+
+  const status = getMemberStatus(name, statusList);  
+
+  let buttonText = "Loading..."; 
+  let buttonTextColor = "#000000";
+  let buttonColor = "#ffcc00";
+
   
-  status = await new Promise((resolve, reject) => {
-    fetch("/status", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`
-      },
-      body: JSON.stringify({ name })
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        status = data.status;
-        if (JSON.stringify(status) === JSON.stringify("signedOut")) {
-          status = "Sign In";
-        }
-        else if (JSON.stringify(status) === JSON.stringify("signedIn")) {
-          status = "Sign Out";
-        }
-        return resolve(status);
-        console.log(status);
-    
-      }
-      );
-  });
-  return status; 
-}
-
-function CreateMemberEntry(props) {
-  const { team, name, token } = props;
-  const [status, setStatus] = React.useState("Loading...");
-  
-  const getStatus = () => {
-    getMemberStatus(name, token).then((status) => {
-      console.log("Getting status"); 
-      setStatus(status);
-    });
-  };
-
-  React.useEffect(() => {
-    getStatus();
-    const intervalId = setInterval(getStatus, 1000);
-    return () => clearInterval(intervalId);
-  }, [name, token]);
-
-  if (status == "Loading...") {
-    return ( // thats how we do it
-      <tr>
-        <td>{name}</td>
-        <td>
-          <button type="button" style={{backgroundColor: "#ffcc00", color: "#000000"}}>
-            {status}
-          </button>
-        </td>
-      </tr>
-    );
-  } else if (status == "Sign In") {
-    return (
-      <tr>
-        <td>{name}</td>
-        <td>
-          <button type="button" style={{backgroundColor: "#4b8a3e"}} onClick={() => signIn(name, team, token)}>
-            {status}
-          </button>
-        </td>
-      </tr>
-    );
-  } else if (status == "Sign Out") {
-    return (
-      <tr>
-        <td>{name}</td>
-        <td>
-          <button type="button" style={{backgrounColor: "red"}} onClick={() => signOut(name, team, token)}>
-            {status}
-          </button>
-        </td>
-      </tr>
-    );
+  switch (status) {
+    case -1: // loading
+      buttonText = "Loading...";
+      buttonTextColor = "#000000"
+      buttonColor = "#ffcc00";
+      break;
+    case 0: // signed out
+      buttonText = "Sign in";
+      buttonTextColor = "#ffffff";
+      buttonColor = "#339933";
+      break;
+    case 1: // signed in
+      buttonText = "Sign out";
+      buttonTextColor = "#ffffff";
+      buttonColor = "#cc0000";
+      break;
+    default: // bruh
+      buttonText = "No State";
+      break;
   }
-  
+
+  return (
+    <tr>
+      <td>{name}</td>
+      <td>
+        <button type="button" style={{ backgroundColor: buttonColor, color: buttonTextColor }}>
+          {buttonText}
+        </button>
+      </td>
+    </tr>
+  );
 }
 
+/**
+ * Retrieves and sorts members into their respective teams.
+ */
 function GetMemberList(props) {
   const { memberList, token } = props;
+
   if (!Array.isArray(memberList)) {
     return <p>Member list is not available.</p>;
   }
@@ -135,26 +92,29 @@ function GetMemberList(props) {
   let tTeam = [];
   let sTeam = [];
 
-  console.log(memberList);
+  // Update statuses
+  let statusList = updateStatuses(token);
+  console.log(statusList); 
+
   memberList.forEach((member) => {
     switch (member.team) {
       case "T":
-        tTeam.push(<CreateMemberEntry team={member.team} name={member.name} token={token}/>);
+        tTeam.push(<UpdateMemberEntry team={member.team} name={member.name} token={token} statusList={statusList}/>);
         break;
       case "S":
-        sTeam.push(<CreateMemberEntry team={member.team} name={member.name} token={token}/>);
+        sTeam.push(<UpdateMemberEntry team={member.team} name={member.name} token={token} statusList={statusList}/>);
         break;
       case "X":
-        xTeam.push(<CreateMemberEntry team={member.team} name={member.name} token={token}/>);
+        xTeam.push(<UpdateMemberEntry team={member.team} name={member.name} token={token} statusList={statusList}/>);
         break;
       case "Y":
-        yTeam.push(<CreateMemberEntry team={member.team} name={member.name} token={token}/>);
+        yTeam.push(<UpdateMemberEntry team={member.team} name={member.name} token={token} statusList={statusList}/>);
         break;
       case "Z":
-        zTeam.push(<CreateMemberEntry team={member.team} name={member.name} token={token}/>);
+        zTeam.push(<UpdateMemberEntry team={member.team} name={member.name} token={token} statusList={statusList}/>);
         break;
       case "G":
-        gTeam.push(<CreateMemberEntry team={member.team} name={member.name} token={token}/>);
+        gTeam.push(<UpdateMemberEntry team={member.team} name={member.name} token={token} statusList={statusList}/>);
         break;
       default:
         console.log(`Error: ${member.name} ${member.team} is not a valid team.`);

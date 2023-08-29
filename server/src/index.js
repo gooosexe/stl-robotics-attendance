@@ -79,7 +79,6 @@ function authenticate(req, res, next) {
  */
 app.post("/status", authenticate, (req, res) => {
   const {name} = req.body; // Get the name of the user that we want the status of
-
   // Open timecards.csv file
   let fs = require("fs");
   let rawdata = fs.readFileSync("./src/timecards.csv");
@@ -103,6 +102,48 @@ app.post("/status", authenticate, (req, res) => {
   res.json({status: "signedOut"});  
 });
 
+/**
+ * This function will return the statuses of everyone in a dictionary format 
+ */
+app.get("/allStatus", authenticate, (req, res) => {
+  let token = req.headers.authorization.split(" ")[1];
+  // Decode to get the team and permission
+  const decoded = jwt.verify(token, "secretKey");
+  const {team, permission} = decoded;
+
+  // Get the list of members based on the team and permission
+  const memberList = returnMemberList("", team, permission);
+  let fs = require("fs");
+  let rawdata = fs.readFileSync("./src/timecards.csv");
+  let timecards = rawdata.toString().split("\n");
+  let statusDict = {}; // Dictionary of statuses to return
+
+  // Loop through the timecards and check if the user is signed in or signed out
+  for (let member of memberList) {
+    for (let timecard of timecards) {
+      const [user, timeIn, timeOut, day, signedInBy, signedOutBy] = timecard.split(",");
+      if (user == member.name) {
+        // Check if the timecard has an ending
+        if (timeOut == "") {
+          // If the timecard has no ending, the user is signed in
+          statusDict[member.name] = 1;
+        } else {
+          // If the timecard has an ending, the user is signed out
+          statusDict[member.name] = 0;
+        }
+      }
+    }
+    // If the user has no timecard, they are not signed in
+    if (statusDict[member.name] == undefined) {
+      statusDict[member.name] = 0;
+    }
+  }
+
+  // Return the dictionary of statuses
+  console.log("Returning status dictionary");
+  res.json({statusDict: statusDict});
+});
+
 app.get("/protected", authenticate, (req, res) => {
   res.json({ message: "You are authorized" });
 });
@@ -117,7 +158,7 @@ app.post("/login", (req, res) => {
 
   if (isValid) {
     const memberList = returnMemberList(username, team, permission);
-    console.log(memberList);
+    console.log("Returning member list of size " + memberList.length); 
     const token = jwt.sign(
       {
         username: username,
@@ -133,14 +174,6 @@ app.post("/login", (req, res) => {
   } else {
     res.json({ token: "invalid" });
   }
-});
-
-app.post("/signIn", (req, res) => {
-
-});
-
-app.post("/signOut", (req, res) => {
-
 });
 
 app.listen(PORT, () => {
