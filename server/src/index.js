@@ -92,7 +92,7 @@ app.get("/dashboardData", authenticate, (req, res) => {
   let numberOfMeetingsAttended = 0; // Number of meetings attended to return, we make a set and push the date to it to get the number of unique meetings attended
   let meetingsAttended = new Set(); // Set of meetings attended to return
   let meetingsLastMonth = 0; // Number of meetings attended last month to return
-  let totalHoursLastMonth = 0; // Total hours attended last month to return
+  let totalHours = 0; // Total hours attended last month to return
 
   // Loop through the timecards and check if the user is signed in or signed out
   for (let timecard of timecards) {
@@ -101,22 +101,15 @@ app.get("/dashboardData", authenticate, (req, res) => {
     if (user == name) {
       meetingsAttended.add(day);
 
-      // Calculate the total hours attended last month
-      const meetingDate = new Date(day);
-      const today = new Date();
-      const oneMonthAgo = new Date(
-        today.getFullYear(),
-        today.getMonth() - 1,
-        today.getDate()
-      );
-      if (meetingDate > oneMonthAgo) {
-        // Calculate the hours attended
-        const timeInDate = new Date(timeIn);
-        const timeOutDate = new Date(timeOut);
-        const hours = Math.abs(timeOutDate - timeInDate) / 3600000;
-        totalHoursLastMonth += hours;
-        console.log("Hours: " + hours);
+      // Calculate the total hours 
+      if (timeOut != "") {
+        const [hoursIn, minutesIn, secondsIn] = timeIn.split(":");
+        const [hoursOut, minutesOut, secondsOut] = timeOut.split(":");
+        const hours = parseInt(hoursOut) - parseInt(hoursIn);
+        const minutes = parseInt(minutesOut) - parseInt(minutesIn);
+        totalHours += hours + minutes / 60;
       }
+
     }
     if (user == name && timeOut != "") {
       lastMeetingAttended = day;
@@ -146,7 +139,7 @@ app.get("/dashboardData", authenticate, (req, res) => {
     lastMeetingAttended: lastMeetingAttended,
     numberOfMeetingsAttended: numberOfMeetingsAttended,
     numberOfMeetingsLastMonth: meetingsLastMonth,
-    totalHoursLastMonth: totalHoursLastMonth,
+    totalHours: totalHours,
   });
 });
 

@@ -105,7 +105,7 @@ function Member(props) {
       console.log("Loading...");
       buttonText = "Loading...";
       buttonTextColor = "#000000";
-      buttonColor = "#ffcc00";
+      buttonColor = "#ffc400";
       buttonFunction = () => {
         alert("Please wait for the page to load.");
       };
@@ -141,7 +141,7 @@ function Member(props) {
     default:
       buttonText = "Loading . . .";
       buttonTextColor = "#000000";
-      buttonColor = "#ffcc00";
+      buttonColor = "#ffc400";
       break;
   }
 
@@ -150,8 +150,8 @@ function Member(props) {
   return (
     <>
       <h1>
-        Welcome <span style={{ color: "yellow" }}>{name}</span> from{" "}
-        <span style={{ color: "yellow" }}>82855{team}</span>
+        Welcome <span style={{ color: "#ffc400" }}>{name}</span> from{" "}
+        <span style={{ color: "#ffc400"}}>82855{team}</span>
       </h1>
       <button
         type="button"

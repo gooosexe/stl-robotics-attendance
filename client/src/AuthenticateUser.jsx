@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import jwt from "jwt-decode";
 import "./App.css";
 import "./index.css";
-import Logo from "./roboticsLog.png";
+import Logo from "./roboticsLogo.png";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 
 import Dashboard from "./Dashboard";
@@ -224,31 +224,45 @@ function Login() {
   }
 
   return (
-    <>
-      <img src={Logo} alt="Logo" />
-      <h1>STL Robotics Attendance Login</h1>
-      <form onSubmit={handleSubmit}>
-        <label>
-          Username:
-          <input
-            type="text"
-            value={username}
-            onChange={(event) => setUsername(event.target.value)}
-          />
-        </label>
-        <br />
-        <label>
-          Password:
-          <input
-            type="password"
-            value={password}
-            onChange={(event) => setPassword(event.target.value)}
-          />
-        </label>
-        <br />
-        <button type="submit">Login</button>
-      </form>
-    </>
+    <div className="bg">
+      <div className="login-page">
+        <div className="login-box">
+          <div>
+            <h1 style={{ color: "rgb(255, 197, 0)"}}>
+              STL Robotics Login
+            </h1> 
+            {/*<img src={Logo} width={200} height={200} alt="Logo" />*/}
+            <form onSubmit={handleSubmit} className="login-form">
+              <label style={{}}>
+                Username:
+                <br />
+                <input
+                  type="text"
+                  value={username}
+                  onChange={(event) => setUsername(event.target.value)}
+                />
+              </label>
+              <br />
+              <label>
+                Password:
+                <br />
+                <input
+                  type="password"
+                  value={password}
+                  onChange={(event) => setPassword(event.target.value)}
+                />
+              </label>
+              <br />
+              <div className="login-button">
+                <button type="submit" className="login-button">
+                  Login
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }
 

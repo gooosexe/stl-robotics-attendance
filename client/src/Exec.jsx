@@ -103,9 +103,7 @@ function UpdateMemberEntry(props) {
       };
       break;
     default: // bruh
-      buttonText = "Loading . . .";
-      buttonTextColor = "#000000";
-      buttonColor = "#ffcc00";
+      buttonText = "No State";
       break;
   }
 
@@ -279,8 +277,8 @@ function Exec(props) {
   return (
     <div>
       <h1>
-        Welcome <span style={{ color: "yellow" }}>{name}</span> from{" "}
-        <span style={{ color: "yellow" }}>82855{team}</span>
+        Welcome <span style={{ color: "#ffc400" }}>{name}</span> from{" "}
+        <span style={{ color: "#ffc400" }}>82855{team}</span>
       </h1>
       <GetMemberList memberList={memberList} token={token} />
     </div>

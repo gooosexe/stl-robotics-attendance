@@ -2,6 +2,7 @@
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: normal;
+  font-size: 1em;
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
@@ -24,20 +25,57 @@ a:hover {
 }
 
 body {
-  margin: 0;
   display: flex;
   place-items: top center;
+  margin-top: 50px; /* add margin to body to prevent content from being hidden behind navbar */
+}
+
+nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  background-color: #333;
+  color: #fff;
+  padding: 10px;
+}
+
+nav ul {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+nav li {
+  margin-right: 10px;
+  color: #ffc400;
+  text-shadow: #ffc400;
+}
+
+nav a {
+  color: #fff;
+  text-decoration: none;
+  padding: 5px;
+}
+
+nav a:hover {
+  color: #ffc400;
+  text-shadow: #ffc400 0 0 10px;
+
 }
 
 h1 {
   font-size: 3.2em;
-  line-height: 1.1;
 }
 
 button {
   border-radius: 8px;
   border: 1px solid transparent;
   padding: 0.6em 1.2em;
+  margin: 10px;
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
@@ -48,7 +86,12 @@ button {
 
 button:hover {
   border-color: #ffffff;
+  /* make outline glow
+  color: #ffc400;
+  box-shadow: 0 0 10px #ffc400; */
 }
+
+
 
 button:focus,
 button:focus-visible {
@@ -62,6 +105,26 @@ td {
 
 table {
   margin: auto;
+}
+
+input {
+  display: inline-block;
+  align-self: auto;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  margin: 10px 10px 10px 0;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #1a1a1a;
+  transition: border-color 0.25s;
+}
+
+input:focus {
+  border-color: #ffc400;
+  box-shadow: 0 0 10px #ffc400;
+  outline: 1px solid #ffc400;
 }
 
 @media (prefers-color-scheme: light) {
