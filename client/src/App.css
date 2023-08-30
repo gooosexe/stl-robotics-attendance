@@ -49,33 +49,36 @@
 .gTeam {
   border: 5px solid rgb(255, 196, 0);
   border-radius: 20px;
-  padding: 20px;
+  padding: 0.5vw;
   margin: 20px;
   background-color: #202020;
   width: 33%;
   display: inline-block;
   box-shadow: 0 0 10px rgb(255, 196, 0);
+  min-width: 300px;
 }
 
 .tTeam {
   border: 5px solid rgb(0, 255, 51);
   border-radius: 20px;
-  padding: 20px;
+  padding: 0.5vw;
   margin: 20px;
   background-color: #202020;
   width: 33%;
   display: inline-block;
   vertical-align: top;
   box-shadow: 0 0 10px rgb(0, 255, 51);
+  min-width: 300px;
 }
 
 .sTeam {
   border: 5px solid rgb(181, 11, 220);
   border-radius: 20px;
-  padding: 20px;
+  padding: 0.5vw;
   margin: 20px;
   background-color: #202020;
   width: 33%;
+  min-width: 300px;
   display: inline-block;
   box-shadow: 0 0 10px rgb(181, 11, 220);
 }
@@ -83,10 +86,11 @@
 .xTeam {
   border: 5px solid rgb(14, 234, 216);
   border-radius: 20px;
-  padding: 20px;
+  padding: 0.5vw;
   margin: 20px;
   background-color: #202020;
   width: 33%;
+  min-width: 300px;
   display: inline-block;
   box-shadow: 0 0 10px rgb(14, 234, 216);
 }
@@ -94,10 +98,11 @@
 .yTeam {
   border: 5px solid rgb(18, 104, 15);
   border-radius: 20px;
-  padding: 20px;
+  padding: 0.5vw;
   margin: 20px;
   background-color: #202020;
   width: 33%;
+  min-width: 300px;
   display: inline-block;
   box-shadow: 0 0 10px rgb(18, 104, 15);
 }
@@ -105,10 +110,11 @@
 .zTeam {
   border: 5px solid rgb(114, 11, 205);
   border-radius: 20px;
-  padding: 20px;
+  padding: 0.5vw;
   margin: 20px;
   background-color: #202020;
   width: 33%;
+  min-width: 300px;
   display: inline-block;
   box-shadow: 0 0 10px rgb(114, 11, 205);
 }

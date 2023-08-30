@@ -19,7 +19,8 @@ function returnMemberList(username, team, permission) {
   let memberList = []; // list of members to return
 
   for (let user of users) {
-    const [userTeam, name, userPermission, userUsername, userPassword] = user.split(",");
+    const [userTeam, name, userPermission, userUsername, userPassword] =
+      user.split(",");
     if (
       permission == "exec" ||
       (permission == "captain" && team == userTeam) ||
@@ -44,7 +45,10 @@ function isValidUser(providedUsername, providedPassword) {
   let users = rawdata.toString().split("\n");
   for (let user of users) {
     const [team, name, permission, username, password] = user.split(",");
-    if (providedUsername == username.trim() && providedPassword == password.trim()) {
+    if (
+      providedUsername == username.trim() &&
+      providedPassword == password.trim()
+    ) {
       return [true, permission, name, team];
     }
   }
@@ -52,10 +56,10 @@ function isValidUser(providedUsername, providedPassword) {
 }
 
 /**
- * This function will check if the user is authenticated, will stop the request if not valid 
- * @param {*} req 
- * @param {*} res 
- * @param {*} next 
+ * This function will check if the user is authenticated, will stop the request if not valid
+ * @param {*} req
+ * @param {*} res
+ * @param {*} next
  */
 function authenticate(req, res, next) {
   const { authorization } = req.headers;
@@ -79,8 +83,7 @@ app.get("/dashboardData", authenticate, (req, res) => {
   const name = decoded.name;
   const team = decoded.team;
 
-
-  // GET THE LAST MEETING ATTENDED 
+  // GET THE LAST MEETING ATTENDED
   // Sift through timecards to find the last meeting attended
   let fs = require("fs");
   let rawdata = fs.readFileSync("./src/timecards.csv");
@@ -89,12 +92,31 @@ app.get("/dashboardData", authenticate, (req, res) => {
   let numberOfMeetingsAttended = 0; // Number of meetings attended to return, we make a set and push the date to it to get the number of unique meetings attended
   let meetingsAttended = new Set(); // Set of meetings attended to return
   let meetingsLastMonth = 0; // Number of meetings attended last month to return
+  let totalHoursLastMonth = 0; // Total hours attended last month to return
 
   // Loop through the timecards and check if the user is signed in or signed out
   for (let timecard of timecards) {
-    const [user, timeIn, timeOut, day, signedInBy, signedOutBy] = timecard.split(",");
+    const [user, timeIn, timeOut, day, signedInBy, signedOutBy] =
+      timecard.split(",");
     if (user == name) {
       meetingsAttended.add(day);
+
+      // Calculate the total hours attended last month
+      const meetingDate = new Date(day);
+      const today = new Date();
+      const oneMonthAgo = new Date(
+        today.getFullYear(),
+        today.getMonth() - 1,
+        today.getDate()
+      );
+      if (meetingDate > oneMonthAgo) {
+        // Calculate the hours attended
+        const timeInDate = new Date(timeIn);
+        const timeOutDate = new Date(timeOut);
+        const hours = Math.abs(timeOutDate - timeInDate) / 3600000;
+        totalHoursLastMonth += hours;
+        console.log("Hours: " + hours);
+      }
     }
     if (user == name && timeOut != "") {
       lastMeetingAttended = day;
@@ -106,20 +128,26 @@ app.get("/dashboardData", authenticate, (req, res) => {
     const [month, day, year] = meeting.split("/");
     const meetingDate = new Date(year, month - 1, day);
     const today = new Date();
-    const oneMonthAgo = new Date(today.getFullYear(), today.getMonth() - 1, today.getDate());
+    const oneMonthAgo = new Date(
+      today.getFullYear(),
+      today.getMonth() - 1,
+      today.getDate()
+    );
     if (meetingDate > oneMonthAgo) {
       meetingsLastMonth++;
     }
   }
 
-
+  // Get the number of meetings attended as a total
   numberOfMeetingsAttended = meetingsAttended.size;
-  console.log(meetingsAttended); 
-  
-
 
   // Return the last meeting attended
-  res.json({ lastMeetingAttended: lastMeetingAttended, numberOfMeetingsAttended: numberOfMeetingsAttended, numberOfMeetingsLastMonth: meetingsLastMonth });
+  res.json({
+    lastMeetingAttended: lastMeetingAttended,
+    numberOfMeetingsAttended: numberOfMeetingsAttended,
+    numberOfMeetingsLastMonth: meetingsLastMonth,
+    totalHoursLastMonth: totalHoursLastMonth,
+  });
 });
 
 app.post("/signIn", authenticate, (req, res) => {
@@ -128,7 +156,9 @@ app.post("/signIn", authenticate, (req, res) => {
   let token = req.headers.authorization.split(" ")[1];
   const decoded = jwt.verify(token, "secretKey");
   const signedInBy = decoded.name;
-  process.stdout.write("Attempting: Sign in " + name + " by " + signedInBy + "  - - -  "); 
+  process.stdout.write(
+    "Attempting: Sign in " + name + " by " + signedInBy + "  - - -  "
+  );
   res.json({ message: "Signed in " + name + " by " + signedInBy });
 
   // Open timecards.csv file
@@ -140,10 +170,13 @@ app.post("/signIn", authenticate, (req, res) => {
 
   // Loop through the timecards and check if the user has a timecard
   for (let timecard of timecards) {
-    const [user, timeIn, timeOut, day, signedInBy, signedOutBy] = timecard.split(",");
+    const [user, timeIn, timeOut, day, signedInBy, signedOutBy] =
+      timecard.split(",");
     if (user == name && timeOut == "") {
       found = true;
-      newTimecards.push([user, timeIn, timeOut, day, signedInBy, signedOutBy].join(","));
+      newTimecards.push(
+        [user, timeIn, timeOut, day, signedInBy, signedOutBy].join(",")
+      );
     } else {
       newTimecards.push(timecard);
     }
@@ -151,14 +184,22 @@ app.post("/signIn", authenticate, (req, res) => {
 
   // The only case you add a new time card is if the user does not have one
   if (!found) {
-    newTimecards.push([name, new Date().toLocaleTimeString(), "", new Date().toLocaleDateString(), signedInBy, ""].join(","));
+    newTimecards.push(
+      [
+        name,
+        new Date().toLocaleTimeString(),
+        "",
+        new Date().toLocaleDateString(),
+        signedInBy,
+        "",
+      ].join(",")
+    );
   }
 
   // Write the new timecards to the file
   fs.writeFileSync("./src/timecards.csv", newTimecards.join("\n"));
 
   console.log("Success: Signed in " + name + " by " + signedInBy);
-
 });
 
 app.post("/signOut", authenticate, (req, res) => {
@@ -168,7 +209,9 @@ app.post("/signOut", authenticate, (req, res) => {
   const decoded = jwt.verify(token, "secretKey");
   const signedOutBy = decoded.name;
 
-  process.stdout.write("Attempting: Sign in " + name + " by " + signedOutBy + "  - - -  "); 
+  process.stdout.write(
+    "Attempting: Sign in " + name + " by " + signedOutBy + "  - - -  "
+  );
   res.json({ message: "Signed out " + name + " by " + signedOutBy });
 
   // Open timecards.csv file
@@ -180,12 +223,20 @@ app.post("/signOut", authenticate, (req, res) => {
 
   // Loop through the timecards and check if the user has a timecard
   for (let timecard of timecards) {
-
-    const [user, timeIn, timeOut, day, signedInBy, oldSignedOutBy] = timecard.split(",");
+    const [user, timeIn, timeOut, day, signedInBy, oldSignedOutBy] =
+      timecard.split(",");
     if (user == name && timeOut == "" && found == false) {
       found = true;
-      newTimecards.push([user, timeIn, new Date().toLocaleTimeString(), day, signedInBy, signedOutBy].join(","));
-
+      newTimecards.push(
+        [
+          user,
+          timeIn,
+          new Date().toLocaleTimeString(),
+          day,
+          signedInBy,
+          signedOutBy,
+        ].join(",")
+      );
     } else {
       newTimecards.push(timecard);
     }
@@ -203,7 +254,7 @@ app.post("/signOut", authenticate, (req, res) => {
 });
 
 /**
- * This function will return the statuses of everyone in a dictionary format 
+ * This function will return the statuses of everyone in a dictionary format
  */
 app.get("/allStatus", authenticate, (req, res) => {
   let token = req.headers.authorization.split(" ")[1];
@@ -223,13 +274,21 @@ app.get("/allStatus", authenticate, (req, res) => {
 
   let statusDict = {}; // Dictionary of statuses to return
 
-  console.log(name + " on " + team + " with permission of " + permission + " requested statuses");
+  console.log(
+    name +
+      " on " +
+      team +
+      " with permission of " +
+      permission +
+      " requested statuses"
+  );
 
   // Loop through the timecards and check if the user is signed in or signed out
   for (let member of memberList) {
-    statusDict[member.name] = 0; 
+    statusDict[member.name] = 0;
     for (let timecard of timecards) {
-      const [user, timeIn, timeOut, day, signedInBy, signedOutBy] = timecard.split(",");
+      const [user, timeIn, timeOut, day, signedInBy, signedOutBy] =
+        timecard.split(",");
       if (user == member.name) {
         // Check if the timecard has an ending
         if (timeOut == "") {
@@ -251,8 +310,6 @@ app.get("/allStatus", authenticate, (req, res) => {
   res.json({ statusDict: statusDict });
 });
 
-
-
 // This function just tests that the server is running
 app.get("/api", (req, res) => {
   res.json({ message: "Hello from server!" });
@@ -268,7 +325,14 @@ app.post("/login", (req, res) => {
   // Get device type
   const device = req.headers["user-agent"];
 
-  console.log("Login attempt from " + ip + " with username " + username + " on device " + device);
+  console.log(
+    "Login attempt from " +
+      ip +
+      " with username " +
+      username +
+      " on device " +
+      device
+  );
 
   if (isValid) {
     const memberList = returnMemberList(username, team, permission);
@@ -279,7 +343,7 @@ app.post("/login", (req, res) => {
         permission: permission,
         name: name,
         team: team,
-        memberList: memberList
+        memberList: memberList,
       },
       "secretKey"
     );
