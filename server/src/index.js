@@ -73,13 +73,12 @@ function authenticate(req, res, next) {
 }
 
 app.post("/signIn", authenticate, (req, res) => {
-  console.log(req.body);
   const name = req.body.member;
   // Get who it was signed by through the token
   let token = req.headers.authorization.split(" ")[1];
   const decoded = jwt.verify(token, "secretKey");
   const signedInBy = decoded.name;
-  console.log("Signing in " + name + " by " + signedInBy);
+  process.stdout.write("Attempting: Sign in " + name + " by " + signedInBy + "  - - -  "); 
   res.json({ message: "Signed in " + name + " by " + signedInBy });
 
   // Open timecards.csv file
@@ -108,18 +107,18 @@ app.post("/signIn", authenticate, (req, res) => {
   // Write the new timecards to the file
   fs.writeFileSync("./src/timecards.csv", newTimecards.join("\n"));
 
-  console.log("Signed in " + name + " by " + signedInBy);
+  console.log("Success: Signed in " + name + " by " + signedInBy);
 
 });
 
 app.post("/signOut", authenticate, (req, res) => {
-  console.log(req.body);
   const name = req.body.member;
   // Get who it was signed by through the token
   let token = req.headers.authorization.split(" ")[1];
   const decoded = jwt.verify(token, "secretKey");
   const signedOutBy = decoded.name;
-  console.log("Signing out " + name + " by " + signedOutBy);
+
+  process.stdout.write("Attempting: Sign in " + name + " by " + signedOutBy + "  - - -  "); 
   res.json({ message: "Signed out " + name + " by " + signedOutBy });
 
   // Open timecards.csv file
@@ -150,7 +149,7 @@ app.post("/signOut", authenticate, (req, res) => {
   // Write the new timecards to the file
   fs.writeFileSync("./src/timecards.csv", newTimecards.join("\n"));
 
-  console.log("Signed out " + name + " by " + signedOutBy);
+  console.log("Success: Signed out " + name + " by " + signedOutBy);
 });
 
 /**
@@ -162,6 +161,7 @@ app.get("/allStatus", authenticate, (req, res) => {
   const decoded = jwt.verify(token, "secretKey");
   const { team, permission } = decoded;
   const username = decoded.username;
+  const name = decoded.name;
 
   // Get the list of members based on the team and permission
   const memberList = returnMemberList(username, team, permission);
@@ -170,7 +170,7 @@ app.get("/allStatus", authenticate, (req, res) => {
   let timecards = rawdata.toString().split("\n");
   let statusDict = {}; // Dictionary of statuses to return
 
-  console.log("Looking for statuses for " + team + " " + permission);
+  console.log(name + " on " + team + " with permission of " + permission + " requested statuses");
 
   // Loop through the timecards and check if the user is signed in or signed out
   for (let member of memberList) {
@@ -195,7 +195,6 @@ app.get("/allStatus", authenticate, (req, res) => {
   }
 
   // Return the dictionary of statuses
-  console.log("Returning status dictionary");
   res.json({ statusDict: statusDict });
 });
 
@@ -216,7 +215,10 @@ app.post("/login", (req, res) => {
 
   // Get ip address without using .connection
   const ip = req.headers["x-forwarded-for"] || req.ip;
-  console.log("Login attempt from " + ip + " with username " + username);
+  // Get device type
+  const device = req.headers["user-agent"];
+
+  console.log("Login attempt from " + ip + " with username " + username + " on device " + device);
 
   if (isValid) {
     const memberList = returnMemberList(username, team, permission);
