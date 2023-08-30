@@ -45,10 +45,8 @@ function Dashboard(props) {
     const { name, team, permission, token } = props;
     return (
         <>
-            <h1 style={{ color: "#fcba03", marginTop: "50px"}}>Dashboard</h1>
-
+            <h1 className="dashboard" style={{ color: "#fcba03", marginTop: "50px" }}>Dashboard</h1>
             <LastMeeting name={name} team={team} permission={permission} token={token} />
-
         </>
     );
 }

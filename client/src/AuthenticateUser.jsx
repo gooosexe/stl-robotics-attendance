@@ -48,23 +48,6 @@ function Login() {
           console.log("TEAM IS: " + decoded.team);
           console.log("MEMBERLIST IS: " + decoded.memberList);
 
-          // Test the token
-          fetch("/protected", {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              "Authorization": `Bearer ${data.token}`
-            }
-          })
-            .then((res) => res.json())
-            .then((data) => {
-              console.log(data);
-            }
-            )
-            .catch((error) => {
-              console.error("Error:", error);
-            }
-            );
         } else {
           console.log("Invalid username or password")
           alert("Invalid credentials.")
@@ -102,12 +85,54 @@ function Login() {
           </Router>
         );
 
-        // return (<Exec name={name} team={team} permission={permission} token={token} memberList={memberList} />);
+      // return (<Exec name={name} team={team} permission={permission} token={token} memberList={memberList} />);
       case "captain":
         console.log("captain");
+        return (
+          <Router>
+            <nav>
+              <ul>
+                <li>
+                  <Link to="/">Sign In / Out</Link>
+                </li>
+                <li>
+                  <Link to="/member">Member</Link>
+                </li>
+                <li><Link to="/dashboard">Dashboard</Link></li>
+              </ul>
+            </nav>
+            <Routes>
+              <Route path="/" element={<Captain name={name} team={team} permission={permission} token={token} memberList={memberList} />} />
+              <Route path="/dashboard" element={<Dashboard name={name} team={team} permission={permission} token={token} memberList={memberList} />} />
+              <Route path="/member" element={<Member name={name} team={team} permission={permission} token={token} memberList={memberList} />} />
+            </Routes>
+          </Router>
+        );
         return (<Captain name={name} team={team} permission={permission} token={token} memberList={memberList} />);
       case "member":
         console.log("member");
+
+        return (
+          <Router>
+            <nav>
+              <ul>
+                <li>
+                  <Link to="/">Sign In / Out</Link>
+                </li>
+                <li>
+                  <Link to="/dashboard">Dashboard</Link>
+                </li> 
+              </ul>
+            </nav>
+            <Routes>
+              <Route path="/" element={<Member name={name} team={team} permission={permission} token={token} />} />
+              <Route path="/dashboard" element={<Dashboard name={name} team={team} permission={permission} token={token} />} />
+            </Routes>
+          </Router>
+
+
+        );
+
         return (<Member name={name} team={team} permission={permission} token={token} />);
       default:
         alert("Not sure how you got here.")

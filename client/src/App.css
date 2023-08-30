@@ -5,10 +5,17 @@
   text-align: center;
 }
 
+.dashboard {
+  font-family:  'Handjet', cursive;
+  font-size: 50pt;
+  margin: 0;
+  padding: 0;
+}
+
 .big-button {
-  width: 75%;
-  height: 50%;
-  font-size: 41pt;
+  width: 100%;
+  height: 75%;
+  font-size: 40pt;
 }
 
 .captainTable {
@@ -155,7 +162,8 @@ nav a {
 }
 
 nav a:hover {
-  background-color: #555;
+  background-color: #3f3e3e;
+  color:rgb(255, 196, 0);
 }
 
 body {

@@ -114,6 +114,7 @@ app.get("/dashboardData", authenticate, (req, res) => {
 
 
   numberOfMeetingsAttended = meetingsAttended.size;
+  console.log(meetingsAttended); 
 
 
 
@@ -142,7 +143,7 @@ app.post("/signIn", authenticate, (req, res) => {
     const [user, timeIn, timeOut, day, signedInBy, signedOutBy] = timecard.split(",");
     if (user == name && timeOut == "") {
       found = true;
-      newTimecards.push([user, timeIn, timeOut, signedInBy, signedOutBy].join(","));
+      newTimecards.push([user, timeIn, timeOut, day, signedInBy, signedOutBy].join(","));
     } else {
       newTimecards.push(timecard);
     }
@@ -150,7 +151,7 @@ app.post("/signIn", authenticate, (req, res) => {
 
   // The only case you add a new time card is if the user does not have one
   if (!found) {
-    newTimecards.push([name, new Date().toLocaleString().replace(",", ""), "", new Date().toLocaleDateString(), signedInBy, ""].join(","));
+    newTimecards.push([name, new Date().toLocaleTimeString(), "", new Date().toLocaleDateString(), signedInBy, ""].join(","));
   }
 
   // Write the new timecards to the file
@@ -183,7 +184,7 @@ app.post("/signOut", authenticate, (req, res) => {
     const [user, timeIn, timeOut, day, signedInBy, oldSignedOutBy] = timecard.split(",");
     if (user == name && timeOut == "" && found == false) {
       found = true;
-      newTimecards.push([user, timeIn, new Date().toLocaleString().replace(",", ""), day, signedInBy, signedOutBy].join(","));
+      newTimecards.push([user, timeIn, new Date().toLocaleTimeString(), day, signedInBy, signedOutBy].join(","));
 
     } else {
       newTimecards.push(timecard);
@@ -217,6 +218,9 @@ app.get("/allStatus", authenticate, (req, res) => {
   let fs = require("fs");
   let rawdata = fs.readFileSync("./src/timecards.csv");
   let timecards = rawdata.toString().split("\n");
+  // Slice to only use the last 1000 timecards
+  timecards = timecards.slice(Math.max(timecards.length - 1000, 0));
+
   let statusDict = {}; // Dictionary of statuses to return
 
   console.log(name + " on " + team + " with permission of " + permission + " requested statuses");
@@ -247,10 +251,7 @@ app.get("/allStatus", authenticate, (req, res) => {
   res.json({ statusDict: statusDict });
 });
 
-// This function just tests that the authentication works
-app.get("/protected", authenticate, (req, res) => {
-  res.json({ message: "You are authorized" });
-});
+
 
 // This function just tests that the server is running
 app.get("/api", (req, res) => {

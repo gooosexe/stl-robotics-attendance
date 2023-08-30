@@ -189,7 +189,7 @@ function GetMemberList(props) {
     <>
       <div className="captainTable">
         <h2>82855{captainTeam} Members</h2>
-        <table>
+        <table> 
           <tr>
           </tr>
           {team}
