@@ -74,7 +74,7 @@ function authenticate(req, res, next) {
 
 app.post("/signIn", authenticate, (req, res) => {
   console.log(req.body);
-  const name = req.body.member; 
+  const name = req.body.member;
   // Get who it was signed by through the token
   let token = req.headers.authorization.split(" ")[1];
   const decoded = jwt.verify(token, "secretKey");
@@ -110,7 +110,7 @@ app.post("/signIn", authenticate, (req, res) => {
 
   console.log("Signed in " + name + " by " + signedInBy);
 
-}); 
+});
 
 app.post("/signOut", authenticate, (req, res) => {
   console.log(req.body);
@@ -136,7 +136,7 @@ app.post("/signOut", authenticate, (req, res) => {
     if (user == name && timeOut == "" && found == false) {
       found = true;
       newTimecards.push([user, timeIn, new Date().toLocaleString().replace(",", ""), day, signedInBy, signedOutBy].join(","));
-      
+
     } else {
       newTimecards.push(timecard);
     }
@@ -154,52 +154,27 @@ app.post("/signOut", authenticate, (req, res) => {
 });
 
 /**
- * This function will return the status of the user 
- * Either signedIn or signedOut
- */
-app.post("/status", authenticate, (req, res) => {
-  const {name} = req.body; // Get the name of the user that we want the status of
-  // Open timecards.csv file
-  let fs = require("fs");
-  let rawdata = fs.readFileSync("./src/timecards.csv");
-  let timecards = rawdata.toString().split("\n");
-
-  // Check if the user has a timecard
-  for (let timecard of timecards) {
-    const [user, timeIn, timeOut, day, signedInBy, signedOutBy] = timecard.split(",");
-    if (user == name) {
-      // Check if the timecard has an ending 
-      if (timeOut == "") {
-        // If the timecard has no ending, the user is signed in
-        res.json({status: "signedIn"});
-      } else {
-        // If the timecard has an ending, the user is signed out
-        res.json({status: "signedOut"});
-      }
-    }
-  }
-  // If the user has no timecard, they are not signed in
-  res.json({status: "signedOut"});  
-});
-
-/**
  * This function will return the statuses of everyone in a dictionary format 
  */
 app.get("/allStatus", authenticate, (req, res) => {
   let token = req.headers.authorization.split(" ")[1];
   // Decode to get the team and permission
   const decoded = jwt.verify(token, "secretKey");
-  const {team, permission} = decoded;
+  const { team, permission } = decoded;
+  const username = decoded.username;
 
   // Get the list of members based on the team and permission
-  const memberList = returnMemberList("", team, permission);
+  const memberList = returnMemberList(username, team, permission);
   let fs = require("fs");
   let rawdata = fs.readFileSync("./src/timecards.csv");
   let timecards = rawdata.toString().split("\n");
   let statusDict = {}; // Dictionary of statuses to return
 
+  console.log("Looking for statuses for " + team + " " + permission);
+
   // Loop through the timecards and check if the user is signed in or signed out
   for (let member of memberList) {
+    statusDict[member.name] = 0; 
     for (let timecard of timecards) {
       const [user, timeIn, timeOut, day, signedInBy, signedOutBy] = timecard.split(",");
       if (user == member.name) {
@@ -221,7 +196,7 @@ app.get("/allStatus", authenticate, (req, res) => {
 
   // Return the dictionary of statuses
   console.log("Returning status dictionary");
-  res.json({statusDict: statusDict});
+  res.json({ statusDict: statusDict });
 });
 
 // This function just tests that the authentication works
