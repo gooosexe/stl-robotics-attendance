@@ -103,7 +103,9 @@ function UpdateMemberEntry(props) {
       };
       break;
     default: // bruh
-      buttonText = "No State";
+      buttonText = "Loading . . .";
+      buttonTextColor = "#000000";
+      buttonColor = "#ffcc00";
       break;
   }
 

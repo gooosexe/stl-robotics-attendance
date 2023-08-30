@@ -139,7 +139,9 @@ function Member(props) {
       };
       break;
     default:
-      buttonText = "No State";
+      buttonText = "Loading . . .";
+      buttonTextColor = "#000000";
+      buttonColor = "#ffcc00";
       break;
   }
 
@@ -147,10 +149,10 @@ function Member(props) {
 
   return (
     <>
-      <h2>
+      <h1>
         Welcome <span style={{ color: "yellow" }}>{name}</span> from{" "}
         <span style={{ color: "yellow" }}>82855{team}</span>
-      </h2>
+      </h1>
       <button
         type="button"
         className="big-button"

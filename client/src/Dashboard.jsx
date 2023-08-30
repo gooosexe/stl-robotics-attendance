@@ -31,8 +31,8 @@ function LastMeeting(props) {
   return (
     <>
       <h2> Last Meeting Attended: {lastMeeting} </h2>
-      <h2> Number of Meetings Attended: {numberOfMeetings} </h2>
-      <h2> Number of Meetings Attended Last Month: {meetingsLastMonth} </h2>
+      <h2> Meetings attended: {numberOfMeetings} </h2>
+      <h2> Meetings attended last month: {meetingsLastMonth} </h2>
     </>
   );
 }
@@ -40,8 +40,8 @@ function LastMeeting(props) {
 function Dashboard(props) {
   const { name, team, permission, token } = props;
   return (
-    <>
-      <h1 className="dashboard" style={{ color: "#fcba03", marginTop: "50px" }}>
+    <div className="dashboard">
+      <h1 className="dashboard" style={{ color: "#fcba03"}}>
         Dashboard for {name}
       </h1>
       <LastMeeting
@@ -50,7 +50,7 @@ function Dashboard(props) {
         permission={permission}
         token={token}
       />
-    </>
+    </div>
   );
 }
 

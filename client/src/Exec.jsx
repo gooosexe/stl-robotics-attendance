@@ -1,7 +1,6 @@
 import "./App.css";
 import "./index.css";
 import React from "react";
-import { Link } from "react-router-dom";
 
 /**
  * Updates the memberStatuses dictionary at a set interval
@@ -19,13 +18,6 @@ async function updateStatuses(token, setStatusList) {
       setStatusList(data.statusDict);
       console.log(`Done updating statuses`);
     });
-}
-
-/**
- * Returns the status of members from the memberStatuses dictionary
- */
-function getMemberStatus(member, statusList) {
-  return statusList[member];
 }
 
 async function signOut(token, member) {
@@ -111,7 +103,9 @@ function UpdateMemberEntry(props) {
       };
       break;
     default: // bruh
-      buttonText = "No State";
+      buttonText = "Loading . . .";
+      buttonTextColor = "#000000";
+      buttonColor = "#ffcc00";
       break;
   }
 

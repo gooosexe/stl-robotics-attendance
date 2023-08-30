@@ -6,16 +6,33 @@
 }
 
 .dashboard {
-  font-family: "Handjet", cursive;
-  font-size: 50pt;
-  margin: 0;
-  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.dashboard h1 {
+  display: flex;
+  font-family: 'Jetbrains Mono', monospace;
+  font-size: 40pt;
+  font-weight: bold;
+  align-items: flex-start;
+  color: rgb(255, 255, 255);
+}
+
+.dashboard h2 {
+  display: flex;
+  font-size: 20pt;
+  align-items: flex-start;
+  color: rgb(255, 255, 255);
+  line-height: 0.5em;
 }
 
 .big-button {
   width: 100%;
-  height: 75%;
-  font-size: 40pt;
+  height: 100%;
+  font-size: 96pt;
 }
 
 .captainTable {
