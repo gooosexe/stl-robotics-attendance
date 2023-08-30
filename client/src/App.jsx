@@ -1,7 +1,6 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
-import AuthenticateUser from './AuthenticateUser'
+import React from "react";
+import "./App.css";
+import AuthenticateUser from "./AuthenticateUser";
 
 function App() {
   const [data, setData] = React.useState(null);
@@ -12,15 +11,13 @@ function App() {
       .then((data) => setData(data.message));
   }, []);
 
-  console.log(data); 
-  
+  console.log(data);
+
   return (
     <>
-    <AuthenticateUser />
+      <AuthenticateUser />
     </>
   );
 }
 
 export default App;
-
-

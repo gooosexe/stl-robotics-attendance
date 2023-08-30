@@ -28,7 +28,7 @@ function Login() {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ username, password })
+      body: JSON.stringify({ username, password }),
     })
       .then((res) => res.json())
       .then((data) => {
@@ -47,10 +47,9 @@ function Login() {
           console.log("NAME IS: " + decoded.name);
           console.log("TEAM IS: " + decoded.team);
           console.log("MEMBERLIST IS: " + decoded.memberList);
-
         } else {
-          console.log("Invalid username or password")
-          alert("Invalid credentials.")
+          console.log("Invalid username or password");
+          alert("Invalid credentials.");
           setIsLoggedIn(false);
         }
       })
@@ -62,8 +61,6 @@ function Login() {
   if (isLoggedIn) {
     switch (permission) {
       case "exec":
-        console.log("exec");
-
         return (
           <Router>
             <nav>
@@ -74,20 +71,52 @@ function Login() {
                 <li>
                   <Link to="/member">Member</Link>
                 </li>
-                <li><Link to="/dashboard">Dashboard</Link></li>
+                <li>
+                  <Link to="/dashboard">Dashboard</Link>
+                </li>
               </ul>
             </nav>
             <Routes>
-              <Route path="/" element={<Exec name={name} team={team} permission={permission} token={token} memberList={memberList} />} />
-              <Route path="/dashboard" element={<Dashboard name={name} team={team} permission={permission} token={token} memberList={memberList} />} />
-              <Route path="/member" element={<Member name={name} team={team} permission={permission} token={token} memberList={memberList} />} />
+              <Route
+                path="/"
+                element={
+                  <Exec
+                    name={name}
+                    team={team}
+                    permission={permission}
+                    token={token}
+                    memberList={memberList}
+                  />
+                }
+              />
+              <Route
+                path="/dashboard"
+                element={
+                  <Dashboard
+                    name={name}
+                    team={team}
+                    permission={permission}
+                    token={token}
+                    memberList={memberList}
+                  />
+                }
+              />
+              <Route
+                path="/member"
+                element={
+                  <Member
+                    name={name}
+                    team={team}
+                    permission={permission}
+                    token={token}
+                    memberList={memberList}
+                  />
+                }
+              />
             </Routes>
           </Router>
         );
-
-      // return (<Exec name={name} team={team} permission={permission} token={token} memberList={memberList} />);
       case "captain":
-        console.log("captain");
         return (
           <Router>
             <nav>
@@ -98,20 +127,52 @@ function Login() {
                 <li>
                   <Link to="/member">Member</Link>
                 </li>
-                <li><Link to="/dashboard">Dashboard</Link></li>
+                <li>
+                  <Link to="/dashboard">Dashboard</Link>
+                </li>
               </ul>
             </nav>
             <Routes>
-              <Route path="/" element={<Captain name={name} team={team} permission={permission} token={token} memberList={memberList} />} />
-              <Route path="/dashboard" element={<Dashboard name={name} team={team} permission={permission} token={token} memberList={memberList} />} />
-              <Route path="/member" element={<Member name={name} team={team} permission={permission} token={token} memberList={memberList} />} />
+              <Route
+                path="/"
+                element={
+                  <Captain
+                    name={name}
+                    team={team}
+                    permission={permission}
+                    token={token}
+                    memberList={memberList}
+                  />
+                }
+              />
+              <Route
+                path="/dashboard"
+                element={
+                  <Dashboard
+                    name={name}
+                    team={team}
+                    permission={permission}
+                    token={token}
+                    memberList={memberList}
+                  />
+                }
+              />
+              <Route
+                path="/member"
+                element={
+                  <Member
+                    name={name}
+                    team={team}
+                    permission={permission}
+                    token={token}
+                    memberList={memberList}
+                  />
+                }
+              />
             </Routes>
           </Router>
         );
-        return (<Captain name={name} team={team} permission={permission} token={token} memberList={memberList} />);
       case "member":
-        console.log("member");
-
         return (
           <Router>
             <nav>
@@ -121,30 +182,50 @@ function Login() {
                 </li>
                 <li>
                   <Link to="/dashboard">Dashboard</Link>
-                </li> 
+                </li>
               </ul>
             </nav>
             <Routes>
-              <Route path="/" element={<Member name={name} team={team} permission={permission} token={token} />} />
-              <Route path="/dashboard" element={<Dashboard name={name} team={team} permission={permission} token={token} />} />
+              <Route
+                path="/"
+                element={
+                  <Member
+                    name={name}
+                    team={team}
+                    permission={permission}
+                    token={token}
+                  />
+                }
+              />
+              <Route
+                path="/dashboard"
+                element={
+                  <Dashboard
+                    name={name}
+                    team={team}
+                    permission={permission}
+                    token={token}
+                  />
+                }
+              />
             </Routes>
           </Router>
-
-
         );
-
-        return (<Member name={name} team={team} permission={permission} token={token} />);
       default:
-        alert("Not sure how you got here.")
+        alert("Not sure how you got here.");
         break;
     }
-    return <div>
-      {/** <add an image  */}
-      <h1>If you reached this page, please contact an executive</h1>
-    </div>;
+    return (
+      <div>
+        {/** <add an image  */}
+        <h1>If you reached this page, please contact an executive</h1>
+      </div>
+    );
   }
+
   return (
-    <><img src={Logo} alt="Logo" />
+    <>
+      <img src={Logo} alt="Logo" />
       <h1>STL Robotics Attendance Login</h1>
       <form onSubmit={handleSubmit}>
         <label>
@@ -166,7 +247,8 @@ function Login() {
         </label>
         <br />
         <button type="submit">Login</button>
-      </form></>
+      </form>
+    </>
   );
 }
 

@@ -115,7 +115,7 @@ app.get("/dashboardData", authenticate, (req, res) => {
 
   numberOfMeetingsAttended = meetingsAttended.size;
   console.log(meetingsAttended); 
-
+  
 
 
   // Return the last meeting attended

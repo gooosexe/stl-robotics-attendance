@@ -3,9 +3,9 @@ import "./index.css";
 import React from "react";
 
 /**
- * 
- * @param {The token for the jwt authorization on the servberside} token 
- * @param {The set react component to set the status listThis function ha} setStatusList 
+ *
+ * @param {The token for the jwt authorization on the servberside} token
+ * @param {The set react component to set the status listThis function ha} setStatusList
  */
 async function updateStatuses(token, setStatusList) {
   try {
@@ -13,8 +13,8 @@ async function updateStatuses(token, setStatusList) {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`
-      }
+        Authorization: `Bearer ${token}`,
+      },
     })
       .then((res) => res.json())
       .then((data) => {
@@ -22,14 +22,16 @@ async function updateStatuses(token, setStatusList) {
       });
   } catch (err) {
     console.log(`Error: ${err}`);
-    alert("Unable to communicate with server. Please try again later or contact an executive.");
+    alert(
+      "Unable to communicate with server. Please try again later or contact an executive."
+    );
   }
 }
 
 /**
  * This functions calls the /signOut to sign out a member
- * @param {This is the jwt token} token 
- * @param {This is the name of the member} member 
+ * @param {This is the jwt token} token
+ * @param {This is the name of the member} member
  */
 async function signOut(token, member) {
   console.log(`Signing out ${member}...`);
@@ -38,26 +40,25 @@ async function signOut(token, member) {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`
+        Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify({ member: member })
+      body: JSON.stringify({ member: member }),
     })
       .then((res) => res.json())
-      .then((data) => {
-
-      })
+      .then((data) => {})
       .catch((err) => {
         console.log(`Error: ${err}`);
-      }
-      );
+      });
   } catch (err) {
     console.log(`Error: ${err}`);
-    alert("Unable to communicate with server. Please try again later or contact an executive.");
+    alert(
+      "Unable to communicate with server. Please try again later or contact an executive."
+    );
   }
 }
 
 /**
- * This function calls the /signin to a signout a member 
+ * This function calls the /signin to a signout a member
  * @param {This is the jwt token} token
  * @param {This is the name of the member} member
  */
@@ -67,18 +68,15 @@ async function signIn(token, member) {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "Authorization": `Bearer ${token}`
+      Authorization: `Bearer ${token}`,
     },
-    body: JSON.stringify({ member: member })
+    body: JSON.stringify({ member: member }),
   })
     .then((res) => res.json())
-    .then((data) => {
-
-    })
+    .then((data) => {})
     .catch((err) => {
       console.log(`Error: ${err}`);
-    }
-    );
+    });
 }
 
 /**
@@ -106,9 +104,11 @@ function Member(props) {
     case -1: // loading
       console.log("Loading...");
       buttonText = "Loading...";
-      buttonTextColor = "#000000"
+      buttonTextColor = "#000000";
       buttonColor = "#ffcc00";
-      buttonFunction = () => { alert("Please wait for the page to load.") };
+      buttonFunction = () => {
+        alert("Please wait for the page to load.");
+      };
       break;
     case 0: // signed out
       buttonText = "Sign in";
@@ -119,7 +119,7 @@ function Member(props) {
         signIn(token, name)
           .then(() => {
             updateStatuses(token, setStatusList);
-            setIsSigningIn(false)
+            setIsSigningIn(false);
           })
           .finally(() => console.log("Done signing in " + name + "\n"));
       };
@@ -131,7 +131,10 @@ function Member(props) {
       buttonFunction = () => {
         setIsSigningIn(true);
         signOut(token, name)
-          .then(() => { updateStatuses(token, setStatusList); setIsSigningIn(false) })
+          .then(() => {
+            updateStatuses(token, setStatusList);
+            setIsSigningIn(false);
+          })
           .finally(() => console.log("Done signing out " + name + "\n"));
       };
       break;
@@ -140,14 +143,21 @@ function Member(props) {
       break;
   }
 
-  // Write an if statement that 
+  // Write an if statement that
 
   return (
     <>
       <h2>
-        Welcome <span style={{ color: "yellow" }}>{name}</span> from <span style={{ color: "yellow" }}>82855{team}</span>
+        Welcome <span style={{ color: "yellow" }}>{name}</span> from{" "}
+        <span style={{ color: "yellow" }}>82855{team}</span>
       </h2>
-      <button type="button" className="big-button" style={{ backgroundColor: buttonColor, color: buttonTextColor }} onClick={buttonFunction} disabled={isSigningIn}>
+      <button
+        type="button"
+        className="big-button"
+        style={{ backgroundColor: buttonColor, color: buttonTextColor }}
+        onClick={buttonFunction}
+        disabled={isSigningIn}
+      >
         {buttonText}
       </button>
     </>
