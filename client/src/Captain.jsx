@@ -20,13 +20,6 @@ async function updateStatuses(token, setStatusList) {
     });
 }
 
-/**
- * Returns the status of members from the memberStatuses dictionary
- */
-function getMemberStatus(member, statusList) {
-  return statusList[member];
-}
-
 async function signOut(token, member) {
   console.log(`Signing out ${member}...`);
   await fetch("/signOut", {

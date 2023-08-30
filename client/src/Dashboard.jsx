@@ -1,9 +1,6 @@
-import React, { useState, useEffect } from "react";
-import jwt from "jwt-decode";
+import React, { useState } from "react";
 import "./App.css";
 import "./index.css";
-import Logo from "./roboticsLog.png";
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 
 function LastMeeting(props) {
   const { name, team, permission, token } = props;
@@ -29,7 +26,7 @@ function LastMeeting(props) {
       .catch((err) => {
         console.log(`Error: ${err}`);
       });
-  }, []);
+  });
 
   return (
     <>
@@ -45,7 +42,7 @@ function Dashboard(props) {
   return (
     <>
       <h1 className="dashboard" style={{ color: "#fcba03", marginTop: "50px" }}>
-        Dashboard
+        Dashboard for {name}
       </h1>
       <LastMeeting
         name={name}
