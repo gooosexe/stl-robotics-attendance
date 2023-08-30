@@ -72,6 +72,55 @@ function authenticate(req, res, next) {
   }
 }
 
+app.get("/dashboardData", authenticate, (req, res) => {
+  let token = req.headers.authorization.split(" ")[1];
+  const decoded = jwt.verify(token, "secretKey");
+  const { username, permission } = decoded;
+  const name = decoded.name;
+  const team = decoded.team;
+
+
+  // GET THE LAST MEETING ATTENDED 
+  // Sift through timecards to find the last meeting attended
+  let fs = require("fs");
+  let rawdata = fs.readFileSync("./src/timecards.csv");
+  let timecards = rawdata.toString().split("\n");
+  let lastMeetingAttended = "None"; // Last meeting attended to return
+  let numberOfMeetingsAttended = 0; // Number of meetings attended to return, we make a set and push the date to it to get the number of unique meetings attended
+  let meetingsAttended = new Set(); // Set of meetings attended to return
+  let meetingsLastMonth = 0; // Number of meetings attended last month to return
+
+  // Loop through the timecards and check if the user is signed in or signed out
+  for (let timecard of timecards) {
+    const [user, timeIn, timeOut, day, signedInBy, signedOutBy] = timecard.split(",");
+    if (user == name) {
+      meetingsAttended.add(day);
+    }
+    if (user == name && timeOut != "") {
+      lastMeetingAttended = day;
+    }
+  }
+
+  // Iterate through meetingsAttended to see which ones fall within the last month
+  for (let meeting of meetingsAttended) {
+    const [month, day, year] = meeting.split("/");
+    const meetingDate = new Date(year, month - 1, day);
+    const today = new Date();
+    const oneMonthAgo = new Date(today.getFullYear(), today.getMonth() - 1, today.getDate());
+    if (meetingDate > oneMonthAgo) {
+      meetingsLastMonth++;
+    }
+  }
+
+
+  numberOfMeetingsAttended = meetingsAttended.size;
+
+
+
+  // Return the last meeting attended
+  res.json({ lastMeetingAttended: lastMeetingAttended, numberOfMeetingsAttended: numberOfMeetingsAttended, numberOfMeetingsLastMonth: meetingsLastMonth });
+});
+
 app.post("/signIn", authenticate, (req, res) => {
   const name = req.body.member;
   // Get who it was signed by through the token

@@ -140,11 +140,13 @@ function Member(props) {
       break;
   }
 
+  // Write an if statement that 
+
   return (
     <>
-      <h1>
+      <h2>
         Welcome <span style={{ color: "yellow" }}>{name}</span> from <span style={{ color: "yellow" }}>82855{team}</span>
-      </h1>
+      </h2>
       <button type="button" className="big-button" style={{ backgroundColor: buttonColor, color: buttonTextColor }} onClick={buttonFunction} disabled={isSigningIn}>
         {buttonText}
       </button>

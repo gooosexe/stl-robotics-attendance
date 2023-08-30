@@ -1,6 +1,7 @@
 import "./App.css";
 import "./index.css";
 import React from "react";
+import {Link} from "react-router-dom";
 
 /**
  * Updates the memberStatuses dictionary at a set interval

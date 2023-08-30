@@ -3,14 +3,16 @@ import jwt from "jwt-decode";
 import "./App.css";
 import "./index.css";
 import Logo from "./roboticsLog.png";
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 
+import Dashboard from "./Dashboard";
 import Exec from "./Exec";
 import Captain from "./Captain";
 import Member from "./Member";
 
 function Login() {
   const [username, setUsername] = useState("");
-  const [name , setName] = useState("");
+  const [name, setName] = useState("");
   const [team, setTeam] = useState("");
   const [password, setPassword] = useState("");
   const [permission, setPermission] = useState("");
@@ -76,49 +78,70 @@ function Login() {
 
   if (isLoggedIn) {
     switch (permission) {
-      case "exec": 
-        console.log("exec"); 
-        return (<Exec name={name} team={team} permission={permission} token={token} memberList={memberList}/>);
+      case "exec":
+        console.log("exec");
+
+        return (
+          <Router>
+            <nav>
+              <ul>
+                <li>
+                  <Link to="/">Sign In / Out</Link>
+                </li>
+                <li>
+                  <Link to="/member">Member</Link>
+                </li>
+                <li><Link to="/dashboard">Dashboard</Link></li>
+              </ul>
+            </nav>
+            <Routes>
+              <Route path="/" element={<Exec name={name} team={team} permission={permission} token={token} memberList={memberList} />} />
+              <Route path="/dashboard" element={<Dashboard name={name} team={team} permission={permission} token={token} memberList={memberList} />} />
+              <Route path="/member" element={<Member name={name} team={team} permission={permission} token={token} memberList={memberList} />} />
+            </Routes>
+          </Router>
+        );
+
+        // return (<Exec name={name} team={team} permission={permission} token={token} memberList={memberList} />);
       case "captain":
         console.log("captain");
-        return (<Captain name={name}  team={team} permission={permission} token={token} memberList={memberList}/>);
+        return (<Captain name={name} team={team} permission={permission} token={token} memberList={memberList} />);
       case "member":
         console.log("member");
-        return (<Member name={name} team={team} permission={permission} token={token}/>);
+        return (<Member name={name} team={team} permission={permission} token={token} />);
       default:
         alert("Not sure how you got here.")
         break;
     }
     return <div>
       {/** <add an image  */}
-      <h1>Welcome {name} on team {team}!</h1>
-      <p>You are logged in with token: {token}</p>
-      </div>;
+      <h1>If you reached this page, please contact an executive</h1>
+    </div>;
   }
   return (
     <><img src={Logo} alt="Logo" />
-    <h1>STL Robotics Attendance Login</h1>
-    <form onSubmit={handleSubmit}>
-      <label>
-        Username:
-        <input
-          type="text"
-          value={username}
-          onChange={(event) => setUsername(event.target.value)}
-        />
-      </label>
-      <br />
-      <label>
-        Password:
-        <input
-          type="password"
-          value={password}
-          onChange={(event) => setPassword(event.target.value)}
-        />
-      </label>
-      <br />
-      <button type="submit">Login</button>
-    </form></>
+      <h1>STL Robotics Attendance Login</h1>
+      <form onSubmit={handleSubmit}>
+        <label>
+          Username:
+          <input
+            type="text"
+            value={username}
+            onChange={(event) => setUsername(event.target.value)}
+          />
+        </label>
+        <br />
+        <label>
+          Password:
+          <input
+            type="password"
+            value={password}
+            onChange={(event) => setPassword(event.target.value)}
+          />
+        </label>
+        <br />
+        <button type="submit">Login</button>
+      </form></>
   );
 }
 
