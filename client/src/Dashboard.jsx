@@ -25,8 +25,8 @@ function LastMeeting(props) {
         setLastMeeting(data.lastMeetingAttended);
         setNumberOfMeetings(data.numberOfMeetingsAttended);
         setMeetingsLastMonth(data.numberOfMeetingsLastMonth);
-        let roundedHours = Math.round(data.totalHours * 100) / 100;
-        setTotalHours(roundedHours);
+        // let roundedHours = Math.round(data.totalHours * 100) / 100;
+        // setTotalHours(roundedHours);
       })
       .catch((err) => {
         console.log(`Error: ${err}`);
@@ -38,7 +38,6 @@ function LastMeeting(props) {
       <h2> Last Meeting Attended: {lastMeeting} </h2>
       <h2> Meetings attended: {numberOfMeetings} </h2>
       <h2> Meetings attended last month: {meetingsLastMonth} </h2>
-      <h2> Total hours last month: {totalHours} </h2>
     </>
   );
 }
