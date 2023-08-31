@@ -242,6 +242,7 @@ function Login() {
                   type="text"
                   value={username}
                   onChange={(event) => setUsername(event.target.value)}
+                  style={{color: "white"}}
                 />
               </label>
               <br />
@@ -249,6 +250,7 @@ function Login() {
                 Password:
                 <br />
                 <input
+                  style={{color: "white"}}
                   type="password"
                   value={password}
                   onChange={(event) => setPassword(event.target.value)}

@@ -35,9 +35,9 @@ function LastMeeting(props) {
 
   return (
     <>
-      <h2> Last Meeting Attended: {lastMeeting} </h2>
-      <h2> Meetings attended: {numberOfMeetings} </h2>
-      <h2> Meetings attended last month: {meetingsLastMonth} </h2>
+      <h2 style={{color: "white"}}> Last Meeting Attended: {lastMeeting} </h2>
+      <h2 style={{color: "white"}}> Meetings attended: {numberOfMeetings} </h2>
+      <h2 style={{color: "white"}}> Meetings attended last month: {meetingsLastMonth} </h2>
     </>
   );
 }
