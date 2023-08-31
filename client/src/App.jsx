@@ -8,10 +8,10 @@ function App() {
   const serverIpAddress = window.location.hostname;
 
   React.useEffect(() => {
-    fetch(`http://${serverIpAddress}:3001/api`)
+    fetch(`https://${serverIpAddress}:3001/api`)
       .then((res) => res.json())
       .then((data) => setData(data.message));
-  }, []);
+    }, []);
 
   console.log(data);
 

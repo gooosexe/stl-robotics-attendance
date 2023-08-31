@@ -12,7 +12,7 @@ function LastMeeting(props) {
   const [totalHours, setTotalHours] = useState(0);
 
   React.useEffect(() => {
-    fetch(`http://${serverIpAddress}:3001/dashboardData`, {
+    fetch(`https://${serverIpAddress}:3001/dashboardData`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

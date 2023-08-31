@@ -25,7 +25,7 @@ function Login() {
   const handleSubmit = (event) => {
     console.log(username, password);
     event.preventDefault();
-    fetch(`http://${serverIpAddress}:3001/login`, {
+    fetch(`https://${serverIpAddress}:3001/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

@@ -1,10 +1,13 @@
 const express = require("express");
 const cors = require("cors");
 const jwt = require("jsonwebtoken");
+const https = require("https");
+const fs = require("fs");
 
 const PORT = 3001;
 
 const app = express();
+
 
 app.use(cors());
 app.use(express.json());
@@ -347,7 +350,16 @@ app.post("/login", (req, res) => {
   }
 });
 
-// This starts the server
-app.listen(PORT, () => {
-  console.log(`Server listening on ${PORT}`);
+// // This starts the server
+// app.listen(PORT, () => {
+//   console.log(`Server listening on ${PORT}`);
+// });
+
+const options = {
+  key: fs.readFileSync("./server.key"),
+  cert: fs.readFileSync("./server.crt")
+}; 
+
+https.createServer(options, app).listen(PORT, () => {
+  console.log(`Server listening on port ${PORT}`);
 });

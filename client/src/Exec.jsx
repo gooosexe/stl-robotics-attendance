@@ -6,7 +6,7 @@ const serverIpAddress = window.location.hostname;
  * Updates the memberStatuses dictionary at a set interval
  */
 async function updateStatuses(token, setStatusList) {
-  await fetch(`http://${serverIpAddress}:3001/allStatus`, {
+  await fetch(`https://${serverIpAddress}:3001/allStatus`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -22,7 +22,7 @@ async function updateStatuses(token, setStatusList) {
 
 async function signOut(token, member) {
   console.log(`Signing out ${member}...`);
-  await fetch(`http://${serverIpAddress}:3001/signOut`, {
+  await fetch(`https://${serverIpAddress}:3001/signOut`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -39,7 +39,7 @@ async function signOut(token, member) {
 
 async function signIn(token, member) {
   console.log(`Signing in ${member}...`);
-  await fetch(`http://${serverIpAddress}:3001/signIn`, {
+  await fetch(`https://${serverIpAddress}:3001/signIn`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
