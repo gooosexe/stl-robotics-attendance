@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import "./App.css";
 import "./index.css";
 
+const serverIpAddress = window.location.hostname;
+
 function LastMeeting(props) {
   const { name, team, permission, token } = props;
   const [lastMeeting, setLastMeeting] = useState("");
@@ -10,7 +12,7 @@ function LastMeeting(props) {
   const [totalHours, setTotalHours] = useState(0);
 
   React.useEffect(() => {
-    fetch("/dashboardData", {
+    fetch(`http://${serverIpAddress}:3001/dashboardData`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

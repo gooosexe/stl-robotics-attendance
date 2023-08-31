@@ -10,6 +10,8 @@ import Exec from "./Exec";
 import Captain from "./Captain";
 import Member from "./Member";
 
+const serverIpAddress = window.location.hostname;
+
 function Login() {
   const [username, setUsername] = useState("");
   const [name, setName] = useState("");
@@ -23,7 +25,7 @@ function Login() {
   const handleSubmit = (event) => {
     console.log(username, password);
     event.preventDefault();
-    fetch("/login", {
+    fetch(`http://${serverIpAddress}:3001/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

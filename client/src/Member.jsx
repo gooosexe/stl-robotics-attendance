@@ -1,7 +1,7 @@
 import "./App.css";
 import "./index.css";
 import React from "react";
-
+const serverIpAddress = window.location.hostname;
 /**
  *
  * @param {The token for the jwt authorization on the servberside} token
@@ -9,7 +9,7 @@ import React from "react";
  */
 async function updateStatuses(token, setStatusList) {
   try {
-    await fetch("/allStatus", {
+    await fetch(`http://${serverIpAddress}:3001/allStatus`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -36,7 +36,7 @@ async function updateStatuses(token, setStatusList) {
 async function signOut(token, member) {
   console.log(`Signing out ${member}...`);
   try {
-    await fetch("/signOut", {
+    await fetch(`http://${serverIpAddress}:3001/signOut`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -64,7 +64,7 @@ async function signOut(token, member) {
  */
 async function signIn(token, member) {
   console.log(`Signing in ${member}...`);
-  await fetch("/signIn", {
+  await fetch(`http://${serverIpAddress}:3001/signIn`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
