@@ -9,6 +9,7 @@ import Dashboard from "./Dashboard";
 import Exec from "./Exec";
 import Captain from "./Captain";
 import Member from "./Member";
+import Resources from "./Resources";
 
 const serverIpAddress = window.location.hostname;
 
@@ -76,6 +77,9 @@ function Login() {
                 <li>
                   <Link to="/dashboard">Dashboard</Link>
                 </li>
+                <li>
+                  <Link to="/resources">Resources</Link>
+                </li>
               </ul>
             </nav>
             <Routes>
@@ -115,6 +119,12 @@ function Login() {
                   />
                 }
               />
+              <Route
+                path="/resources"
+                element={
+                  <Resources/>
+                }
+              />
             </Routes>
           </Router>
         );
@@ -131,6 +141,9 @@ function Login() {
                 </li>
                 <li>
                   <Link to="/dashboard">Dashboard</Link>
+                </li>
+                <li>
+                  <Link to="/resources">Resources</Link>
                 </li>
               </ul>
             </nav>
@@ -171,6 +184,12 @@ function Login() {
                   />
                 }
               />
+              <Route
+                path="/resources"
+                element={
+                  <Resources/>
+                }
+              />
             </Routes>
           </Router>
         );
@@ -184,6 +203,9 @@ function Login() {
                 </li>
                 <li>
                   <Link to="/dashboard">Dashboard</Link>
+                </li>
+                <li>
+                  <Link to="/resources">Resources</Link>
                 </li>
               </ul>
             </nav>
@@ -208,6 +230,12 @@ function Login() {
                     permission={permission}
                     token={token}
                   />
+                }
+              />
+              <Route
+                path="/resources"
+                element={
+                  <Resources/>
                 }
               />
             </Routes>

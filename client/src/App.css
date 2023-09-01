@@ -5,6 +5,36 @@
   text-align: center;
 }
 
+.resources {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.resources li {
+  margin: 0px 10px;
+  padding: 0;
+  color: #4235f5aa;
+  font-size: 1.5em;
+  border: #ffc400;
+}
+
+.resources div {
+  background-color: #202020;
+  /* border-radius: 20px;
+  border-color: #ffc400;
+  border-style: solid;
+  border-width: 5px;
+  box-shadow: #ffc400; */
+}
+
+.resources a {
+  margin: 4px 10px;
+  padding: 10px 10px;
+  color: #6e64ffaa;
+}
+
 .bg {
   /* set background image to background.png */
   background-image: url("./background.png");
