@@ -1,24 +1,25 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
-import AuthenticateUser from './AuthenticateUser'
+import React from "react";
+import "./App.css";
+import AuthenticateUser from "./AuthenticateUser";
 
 function App() {
   const [data, setData] = React.useState(null);
 
+  const serverIpAddress = window.location.hostname;
+
   React.useEffect(() => {
-    fetch("/api")
+    fetch(`https://${serverIpAddress}:3001/api`)
       .then((res) => res.json())
       .then((data) => setData(data.message));
-  }, []);
+    }, []);
 
-  console.log(data); 
-  
+  console.log(data);
+
   return (
-    <AuthenticateUser />
+    <>
+      <AuthenticateUser />
+    </>
   );
 }
 
 export default App;
-
-

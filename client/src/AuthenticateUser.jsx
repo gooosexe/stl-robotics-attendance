@@ -1,31 +1,37 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import jwt from "jwt-decode";
 import "./App.css";
 import "./index.css";
-import Logo from "./roboticsLog.png";
+import Logo from "./roboticsLogo.png";
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 
+import Dashboard from "./Dashboard";
 import Exec from "./Exec";
 import Captain from "./Captain";
 import Member from "./Member";
+import Resources from "./Resources";
+
+const serverIpAddress = window.location.hostname;
 
 function Login() {
   const [username, setUsername] = useState("");
-  const [name , setName] = useState("");
+  const [name, setName] = useState("");
   const [team, setTeam] = useState("");
   const [password, setPassword] = useState("");
   const [permission, setPermission] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [token, setToken] = useState("");
+  const [memberList, setMemberList] = useState([]);
 
   const handleSubmit = (event) => {
     console.log(username, password);
     event.preventDefault();
-    fetch("/login", {
+    fetch(`https://${serverIpAddress}:3001/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ username, password })
+      body: JSON.stringify({ username, password }),
     })
       .then((res) => res.json())
       .then((data) => {
@@ -38,29 +44,15 @@ function Login() {
           setIsLoggedIn(true);
           setName(decoded.name);
           setTeam(decoded.team);
+          setMemberList(decoded.memberList);
 
-          console.log("TOKEN IS: " + data.token);
-
-          // Test the token
-          fetch("/protected", {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              "Authorization": `Bearer ${data.token}`
-            }
-          })
-            .then((res) => res.json())
-            .then((data) => {
-              console.log(data);
-            }
-            )
-            .catch((error) => {
-              console.error("Error:", error);
-            }
-            );
+          console.log("PERMISSION IS: " + decoded.permission);
+          console.log("NAME IS: " + decoded.name);
+          console.log("TEAM IS: " + decoded.team);
+          console.log("MEMBERLIST IS: " + decoded.memberList);
         } else {
-          console.log("Invalid username or password")
-          alert("Invalid credentials.")
+          console.log("Invalid username or password");
+          alert("Invalid credentials.");
           setIsLoggedIn(false);
         }
       })
@@ -71,52 +63,238 @@ function Login() {
 
   if (isLoggedIn) {
     switch (permission) {
-      case "exec": 
-        console.log("exec"); 
-        return (<Exec />);
-        break;
+      case "exec":
+        return (
+          <Router>
+            <nav>
+              <ul>
+                <li>
+                  <Link to="/">Sign In / Out</Link>
+                </li>
+                <li>
+                  <Link to="/member">Member</Link>
+                </li>
+                <li>
+                  <Link to="/dashboard">Dashboard</Link>
+                </li>
+                <li>
+                  <Link to="/resources">Resources</Link>
+                </li>
+              </ul>
+            </nav>
+            <Routes>
+              <Route
+                path="/"
+                element={
+                  <Exec
+                    name={name}
+                    team={team}
+                    permission={permission}
+                    token={token}
+                    memberList={memberList}
+                  />
+                }
+              />
+              <Route
+                path="/dashboard"
+                element={
+                  <Dashboard
+                    name={name}
+                    team={team}
+                    permission={permission}
+                    token={token}
+                    memberList={memberList}
+                  />
+                }
+              />
+              <Route
+                path="/member"
+                element={
+                  <Member
+                    name={name}
+                    team={team}
+                    permission={permission}
+                    token={token}
+                    memberList={memberList}
+                  />
+                }
+              />
+              <Route
+                path="/resources"
+                element={
+                  <Resources/>
+                }
+              />
+            </Routes>
+          </Router>
+        );
       case "captain":
-        console.log("captain");
-        return (<Captain />);
-        break;
+        return (
+          <Router>
+            <nav>
+              <ul>
+                <li>
+                  <Link to="/">Sign In / Out</Link>
+                </li>
+                <li>
+                  <Link to="/member">Member</Link>
+                </li>
+                <li>
+                  <Link to="/dashboard">Dashboard</Link>
+                </li>
+                <li>
+                  <Link to="/resources">Resources</Link>
+                </li>
+              </ul>
+            </nav>
+            <Routes>
+              <Route
+                path="/"
+                element={
+                  <Captain
+                    name={name}
+                    team={team}
+                    permission={permission}
+                    token={token}
+                    memberList={memberList}
+                  />
+                }
+              />
+              <Route
+                path="/dashboard"
+                element={
+                  <Dashboard
+                    name={name}
+                    team={team}
+                    permission={permission}
+                    token={token}
+                    memberList={memberList}
+                  />
+                }
+              />
+              <Route
+                path="/member"
+                element={
+                  <Member
+                    name={name}
+                    team={team}
+                    permission={permission}
+                    token={token}
+                    memberList={memberList}
+                  />
+                }
+              />
+              <Route
+                path="/resources"
+                element={
+                  <Resources/>
+                }
+              />
+            </Routes>
+          </Router>
+        );
       case "member":
-        console.log("member");
-        return (<Member />);
-        break;
+        return (
+          <Router>
+            <nav>
+              <ul>
+                <li>
+                  <Link to="/">Sign In / Out</Link>
+                </li>
+                <li>
+                  <Link to="/dashboard">Dashboard</Link>
+                </li>
+                <li>
+                  <Link to="/resources">Resources</Link>
+                </li>
+              </ul>
+            </nav>
+            <Routes>
+              <Route
+                path="/"
+                element={
+                  <Member
+                    name={name}
+                    team={team}
+                    permission={permission}
+                    token={token}
+                  />
+                }
+              />
+              <Route
+                path="/dashboard"
+                element={
+                  <Dashboard
+                    name={name}
+                    team={team}
+                    permission={permission}
+                    token={token}
+                  />
+                }
+              />
+              <Route
+                path="/resources"
+                element={
+                  <Resources/>
+                }
+              />
+            </Routes>
+          </Router>
+        );
       default:
-        {alert("what the fuck man")}
+        alert("Not sure how you got here.");
         break;
     }
-    return <div>
-      {/** <add an image  */}
-      <h1>Welcome {name} on team {team}!</h1>
-      <p>You are logged in with token: {token}</p>
-      </div>;
+    return (
+      <div>
+        {/** <add an image  */}
+        <h1>If you reached this page, please contact an executive</h1>
+      </div>
+    );
   }
+
   return (
-    <><img src={Logo} alt="Logo" />
-    <h1>STL Robotics Attendance Login</h1>
-    <form onSubmit={handleSubmit}>
-      <label>
-        Username:
-        <input
-          type="text"
-          value={username}
-          onChange={(event) => setUsername(event.target.value)}
-        />
-      </label>
-      <br />
-      <label>
-        Password:
-        <input
-          type="password"
-          value={password}
-          onChange={(event) => setPassword(event.target.value)}
-        />
-      </label>
-      <br />
-      <button type="submit">Login</button>
-    </form></>
+    <div className="bg">
+      <div className="login-page">
+        <div className="login-box">
+          <div>
+            <h1 style={{ color: "rgb(255, 197, 0)"}}>
+              STL Robotics Login
+            </h1> 
+            {/*<img src={Logo} width={200} height={200} alt="Logo" />*/}
+            <form onSubmit={handleSubmit} className="login-form">
+              <label style={{}}>
+                Username:
+                <br />
+                <input
+                  type="text"
+                  value={username}
+                  onChange={(event) => setUsername(event.target.value)}
+                  style={{color: "white"}}
+                />
+              </label>
+              <br />
+              <label>
+                Password:
+                <br />
+                <input
+                  style={{color: "white"}}
+                  type="password"
+                  value={password}
+                  onChange={(event) => setPassword(event.target.value)}
+                />
+              </label>
+              <br />
+              <div className="login-button">
+                <button type="submit" className="login-button">
+                  Login
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }
 
