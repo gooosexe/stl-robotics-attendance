@@ -8,7 +8,6 @@ const PORT = 3001;
 
 const app = express();
 
-
 app.use(cors());
 app.use(express.json());
 
@@ -104,7 +103,7 @@ app.get("/dashboardData", authenticate, (req, res) => {
     if (user == name) {
       meetingsAttended.add(day);
 
-      // Calculate the total hours 
+      // Calculate the total hours
       if (timeOut != "") {
         const [hoursIn, minutesIn, secondsIn] = timeIn.split(":");
         const [hoursOut, minutesOut, secondsOut] = timeOut.split(":");
@@ -112,7 +111,6 @@ app.get("/dashboardData", authenticate, (req, res) => {
         const minutes = parseInt(minutesOut) - parseInt(minutesIn);
         totalHours += hours + minutes / 60;
       }
-
     }
     if (user == name && timeOut != "") {
       lastMeetingAttended = day;
@@ -357,8 +355,8 @@ app.post("/login", (req, res) => {
 
 const options = {
   key: fs.readFileSync("./server.key"),
-  cert: fs.readFileSync("./server.crt")
-}; 
+  cert: fs.readFileSync("./server.crt"),
+};
 
 https.createServer(options, app).listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);

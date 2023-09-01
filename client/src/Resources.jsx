@@ -15,7 +15,7 @@ function GenerateList() {
       "Programming Resources",
     ],
     ["https://www.robotevents.com/?authuser=0", "Competitions And Rankings"],
-    ["https://wiki.purduesigbots.com/?authuser=0", "Purdue Sigbots"],
+    ["https://wiki.purduesigbots.com/?authuser=0", "Purdue Sigbots Wiki"],
     [
       "https://roboticseducation.org/documents/2023/06/engineering-notebook-rubric.pdf/?authuser=0",
       "Notebook Rubric",
@@ -70,8 +70,8 @@ function GenerateList() {
 function Resources() {
   return (
     <>
-      <h1 style={{ color: "#ffc400", textAlign: "center" }}>Resources</h1>
-      <div className="resources" style={{ textAlign: "left" }}>
+      <div className="resources">
+        <h1 style={{ color: "#ffc400"}}>Resources</h1>
         <ul style={{ listStyleType: "disc" }}>
           <GenerateList />
         </ul>
