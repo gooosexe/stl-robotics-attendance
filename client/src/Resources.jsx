@@ -1,8 +1,6 @@
 import React from "react";
-import ReactDOM from "react-dom/client";
-import "./index.css";
-import App from "./App";
-import "./App.css";
+import "./styles/index.css";
+import "./styles/Resources.css";
 
 function GenerateList() {
   // Make a list of link and text pairs
@@ -70,18 +68,9 @@ function GenerateList() {
 }
 
 function Resources() {
-  console.log("Resources");
   return (
     <>
-      <h1
-        style={{
-          color: "#fcba03",
-          textAlign: "center",
-          textShadow: "0 0 4px #ffc400",
-        }}
-      >
-        Resources
-      </h1>
+      <h1 style={{ color: "#ffc400", textAlign: "center" }}>Resources</h1>
       <div className="resources" style={{ textAlign: "left" }}>
         <ul style={{ listStyleType: "disc" }}>
           <GenerateList />

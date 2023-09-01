@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import "./App.css";
-import "./index.css";
+import "./styles/App.css";
+import "./styles/index.css";
 
 const serverIpAddress = window.location.hostname;
 
@@ -9,7 +9,6 @@ function LastMeeting(props) {
   const [lastMeeting, setLastMeeting] = useState("");
   const [numberOfMeetings, setNumberOfMeetings] = useState(0);
   const [meetingsLastMonth, setMeetingsLastMonth] = useState(0);
-  const [totalHours, setTotalHours] = useState(0);
 
   React.useEffect(() => {
     fetch(`https://${serverIpAddress}:3001/dashboardData`, {
