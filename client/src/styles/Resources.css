@@ -1,6 +1,5 @@
 .resources {
-  display: flex;
-  flex-direction: column;
+  display: inline-block;
   justify-content: left;
   align-items: left;
 }
@@ -19,8 +18,9 @@
   background-color: #202020;
   border-radius: 20px;
   padding: 20px 20px 20px 30px;
-  margin: auto;
+  margin-inline: 20px;
   box-shadow: 0 0 10px #ffc400;
+  display: inline-block;
 }
 
 .resources a {
