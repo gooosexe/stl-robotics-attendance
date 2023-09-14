@@ -1,5 +1,5 @@
 import React from "react";
-import "./App.css";
+import "./styles/App.css";
 import AuthenticateUser from "./AuthenticateUser";
 
 function App() {
@@ -11,7 +11,7 @@ function App() {
     fetch(`https://${serverIpAddress}:3001/api`)
       .then((res) => res.json())
       .then((data) => setData(data.message));
-    }, []);
+    });
 
   console.log(data);
 

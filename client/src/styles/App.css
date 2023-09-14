@@ -5,39 +5,9 @@
   text-align: center;
 }
 
-.resources {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-evenly;
-  align-items: center;
-  flex-wrap: wrap;
-}
-.resources li {
-  margin: 0px 10px;
-  padding: 0;
-  color: #4235f5aa;
-  font-size: 1.5em;
-  border: #ffc400;
-}
-
-.resources div {
-  background-color: #202020;
-  /* border-radius: 20px;
-  border-color: #ffc400;
-  border-style: solid;
-  border-width: 5px;
-  box-shadow: #ffc400; */
-}
-
-.resources a {
-  margin: 4px 10px;
-  padding: 10px 10px;
-  color: #6e64ffaa;
-}
-
 .bg {
   /* set background image to background.png */
-  background-image: url("./background.png");
+  background-image: url("../resources/background.png");
   width: 100%;
   height: 100%;
   min-height: 100%;
@@ -55,7 +25,8 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5); /* Adjust the alpha value for desired darkness */
+  background-color: #00000080;
+  /* Adjust the alpha value for desired darkness */
   backdrop-filter: blur(5px);
   z-index: -1;
 }
@@ -78,7 +49,7 @@
   border-radius: 20px;
   padding: 20px;
   margin: 20px;
-  box-shadow: 0 0 10px rgb(255, 196, 0);
+  box-shadow: 0 0 10px #ffc400;
   overflow: hidden;
   max-width: 800px;
 }
@@ -94,31 +65,7 @@
   overflow: hidden;
 }
 
-.dashboard {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-.dashboard h1 {
-  display: flex;
-  font-family: "Jetbrains Mono", monospace;
-  font-size: 40pt;
-  font-weight: bold;
-  align-items: flex-start;
-  color: rgb(255, 255, 255);
-}
-
-.dashboard h2 {
-  display: flex;
-  font-size: 20pt;
-  align-items: flex-start;
-  color: rgb(255, 255, 255);
-  line-height: 0.5em;
-}
-
-.login-button button:hover{
+.login-button button:hover {
   border-color: #ffc400;
   color: #ffc400;
   box-shadow: 0 0 10px #ffc400;
@@ -135,30 +82,30 @@
 }
 
 .captainTable {
-  border: 5px solid rgb(255, 196, 0);
+  border: 5px solid #ffc400;
   border-radius: 20px;
   padding: 20px;
   margin: 20px;
   background-color: #202020;
   display: inline-block;
   width: 50%;
-  box-shadow: 0 0 10px rgb(255, 196, 0);
+  box-shadow: 0 0 10px #ffc400;
 }
 
 .gTeam {
-  border: 5px solid rgb(255, 196, 0);
+  border: 5px solid #ffc400;
   border-radius: 20px;
   padding: 0.5vw;
   margin: 20px;
   background-color: #202020;
   width: 33%;
   display: inline-block;
-  box-shadow: 0 0 10px rgb(255, 196, 0);
+  box-shadow: 0 0 10px #ffc400;
   min-width: 300px;
 }
 
 .tTeam {
-  border: 5px solid rgb(0, 255, 51);
+  border: 5px solid #00ff33;
   border-radius: 20px;
   padding: 0.5vw;
   margin: 20px;
@@ -166,12 +113,12 @@
   width: 33%;
   display: inline-block;
   vertical-align: top;
-  box-shadow: 0 0 10px rgb(0, 255, 51);
+  box-shadow: 0 0 10px #00ff33;
   min-width: 300px;
 }
 
 .sTeam {
-  border: 5px solid rgb(181, 11, 220);
+  border: 5px solid #b50bdc;
   border-radius: 20px;
   padding: 0.5vw;
   margin: 20px;
@@ -179,11 +126,11 @@
   width: 33%;
   min-width: 300px;
   display: inline-block;
-  box-shadow: 0 0 10px rgb(181, 11, 220);
+  box-shadow: 0 0 10px #b50bdc;
 }
 
 .xTeam {
-  border: 5px solid rgb(14, 234, 216);
+  border: 5px solid #0eead8;
   border-radius: 20px;
   padding: 0.5vw;
   margin: 20px;
@@ -191,11 +138,11 @@
   width: 33%;
   min-width: 300px;
   display: inline-block;
-  box-shadow: 0 0 10px rgb(14, 234, 216);
+  box-shadow: 0 0 10px #0eead8;
 }
 
 .yTeam {
-  border: 5px solid rgb(18, 104, 15);
+  border: 5px solid #12680f;
   border-radius: 20px;
   padding: 0.5vw;
   margin: 20px;
@@ -203,11 +150,11 @@
   width: 33%;
   min-width: 300px;
   display: inline-block;
-  box-shadow: 0 0 10px rgb(18, 104, 15);
+  box-shadow: 0 0 10px #12680f;
 }
 
 .zTeam {
-  border: 5px solid rgb(114, 11, 205);
+  border: 5px solid #720bcd;
   border-radius: 20px;
   padding: 0.5vw;
   margin: 20px;
@@ -215,7 +162,7 @@
   width: 33%;
   min-width: 300px;
   display: inline-block;
-  box-shadow: 0 0 10px rgb(114, 11, 205);
+  box-shadow: 0 0 10px #720bcd;
 }
 
 .logo {
@@ -224,9 +171,11 @@
   will-change: filter;
   transition: filter 300ms;
 }
+
 .logo:hover {
   filter: drop-shadow(0 0 2em #646cffaa);
 }
+
 .logo.react:hover {
   filter: drop-shadow(0 0 2em #61dafbaa);
 }
@@ -235,6 +184,7 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }

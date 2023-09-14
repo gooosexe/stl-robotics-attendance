@@ -8,7 +8,6 @@ const PORT = 3001;
 
 const app = express();
 
-
 app.use(cors());
 app.use(express.json());
 
@@ -104,7 +103,7 @@ app.get("/dashboardData", authenticate, (req, res) => {
     if (user == name) {
       meetingsAttended.add(day);
 
-      // Calculate the total hours 
+      // Calculate the total hours
       if (timeOut != "") {
         const [hoursIn, minutesIn, secondsIn] = timeIn.split(":");
         const [hoursOut, minutesOut, secondsOut] = timeOut.split(":");
@@ -112,7 +111,6 @@ app.get("/dashboardData", authenticate, (req, res) => {
         const minutes = parseInt(minutesOut) - parseInt(minutesIn);
         totalHours += hours + minutes / 60;
       }
-
     }
     if (user == name && timeOut != "") {
       lastMeetingAttended = day;
@@ -148,6 +146,7 @@ app.get("/dashboardData", authenticate, (req, res) => {
 
 app.post("/signIn", authenticate, (req, res) => {
   const name = req.body.member;
+
   // Get who it was signed by through the token
   let token = req.headers.authorization.split(" ")[1];
   const decoded = jwt.verify(token, "secretKey");
@@ -350,15 +349,47 @@ app.post("/login", (req, res) => {
   }
 });
 
-// // This starts the server
-// app.listen(PORT, () => {
-//   console.log(`Server listening on ${PORT}`);
-// });
+// This function signs out members automatically at 4:30 pm if they are not signed out, runs at a 5 minute interval
+setInterval(function () {
+  // Open timecards.csv file
+  let fs = require("fs");
+  let rawdata = fs.readFileSync("./src/timecards.csv");
+  let timecards = rawdata.toString().split("\n");
+  let newTimecards = []; // New timecards to write to the file
+
+  // Check if it is past 4:30 pm
+  if (new Date().getHours() < 16) {
+    return;
+  }
+
+  // Loop through the timecards and check if the user has a timecard
+  for (let timecard of timecards) {
+    const [user, timeIn, timeOut, day, signedInBy, signedOutBy] =
+      timecard.split(",");
+    if (timeOut == "") {
+      newTimecards.push(
+        [
+          user,
+          timeIn,
+          new Date().toLocaleTimeString(),
+          day,
+          signedInBy,
+          "automatic sign out",
+        ].join(",")
+      );
+    } else {
+      newTimecards.push(timecard);
+    }
+  }
+
+  // Write the new timecards to the file
+  fs.writeFileSync("./src/timecards.csv", newTimecards.join("\n"));
+}, 300000);
 
 const options = {
   key: fs.readFileSync("./server.key"),
-  cert: fs.readFileSync("./server.crt")
-}; 
+  cert: fs.readFileSync("./server.crt"),
+};
 
 https.createServer(options, app).listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);

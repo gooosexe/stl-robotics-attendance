@@ -1,5 +1,5 @@
-import "./App.css";
-import "./index.css";
+import "./styles/App.css";
+import "./styles/index.css";
 import React from "react";
 const serverIpAddress = window.location.hostname;
 /**
@@ -79,6 +79,15 @@ function UpdateMemberEntry(props) {
       buttonTextColor = "#ffffff";
       buttonColor = "#339933";
       buttonFunction = () => {
+        // If time is past 5:00 PM, don't allow sign in and alert
+        const date = new Date();
+        const hours = date.getHours();
+        const minutes = date.getMinutes();
+        if ((hours > 17) || (hours === 17 && minutes > 0) || (hours < 14)) {
+          alert("It is past 5:00 PM. You cannot sign in.");
+          return;
+        }
+
         setIsSigningIn(true);
         signIn(token, name)
           .then(() => {

@@ -1,0 +1,12 @@
+.dashboard {
+  background-color: #202020;
+  border-radius: 20px;
+  padding: 20px;
+  margin: auto;
+  box-shadow: 0 0 10px #ffc400;
+}
+
+.dashboard td {
+  text-align: left;
+  color: #ffffff;
+}

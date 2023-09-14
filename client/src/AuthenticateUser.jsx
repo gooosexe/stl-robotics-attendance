@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import jwt from "jwt-decode";
-import "./App.css";
-import "./index.css";
-import Logo from "./roboticsLogo.png";
+import "./styles/App.css";
+import "./styles/index.css";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 
 import Dashboard from "./Dashboard";
