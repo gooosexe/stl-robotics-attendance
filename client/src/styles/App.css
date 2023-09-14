@@ -3,6 +3,9 @@
   margin: 0 auto;
   padding: 10px;
   text-align: center;
+  background-color: #202020; 
+
+  color: #ffffff;
 }
 
 .bg {
@@ -16,6 +19,8 @@
   position: fixed;
   top: 0;
   left: 0;
+
+  color: #ffffff;
 }
 
 .bg::before {
@@ -63,6 +68,8 @@
   padding: 20px;
   margin: 20px;
   overflow: hidden;
+
+  color: #ffffff;
 }
 
 .login-button button:hover {
@@ -90,6 +97,7 @@
   display: inline-block;
   width: 50%;
   box-shadow: 0 0 10px #ffc400;
+  color: #ffffff;
 }
 
 .gTeam {
@@ -102,6 +110,8 @@
   display: inline-block;
   box-shadow: 0 0 10px #ffc400;
   min-width: 300px;
+
+  color: #ffffff;
 }
 
 .tTeam {
@@ -115,6 +125,8 @@
   vertical-align: top;
   box-shadow: 0 0 10px #00ff33;
   min-width: 300px;
+
+  color: #ffffff;
 }
 
 .sTeam {
@@ -127,6 +139,8 @@
   min-width: 300px;
   display: inline-block;
   box-shadow: 0 0 10px #b50bdc;
+
+  color: #ffffff;
 }
 
 .xTeam {
@@ -139,6 +153,8 @@
   min-width: 300px;
   display: inline-block;
   box-shadow: 0 0 10px #0eead8;
+
+  color: #ffffff;
 }
 
 .yTeam {
@@ -151,6 +167,8 @@
   min-width: 300px;
   display: inline-block;
   box-shadow: 0 0 10px #12680f;
+
+  color: #ffffff;
 }
 
 .zTeam {
@@ -163,6 +181,8 @@
   min-width: 300px;
   display: inline-block;
   box-shadow: 0 0 10px #720bcd;
+
+  color: #ffffff;
 }
 
 .logo {

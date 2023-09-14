@@ -54,7 +54,7 @@ function LastMeeting(props) {
 function Dashboard(props) {
   const { name, team, permission, token } = props;
   return (
-    <>
+    <div style= {{backgroundColor: "#202020"}}> 
       <h1 style={{color: "#ffc400"}}>Dashboard for {name}</h1>
       <LastMeeting
         name={name}
@@ -62,7 +62,7 @@ function Dashboard(props) {
         permission={permission}
         token={token}
       />
-    </>
+    </div>
   );
 }
 
