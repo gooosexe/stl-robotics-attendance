@@ -48,7 +48,12 @@ async function signIn(token, member) {
     body: JSON.stringify({ member: member }),
   })
     .then((res) => res.json())
-    .then((data) => {})
+    .then((data) => {
+      // Check the message, if it is TIME ERROR then alert the user
+      if (data.message === "TIME ERROR") {
+        alert("You cannot sign in before 2:30PM");
+      }
+    })
     .catch((err) => {
       console.log(`Error: ${err}`);
     });
