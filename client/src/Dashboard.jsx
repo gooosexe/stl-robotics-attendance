@@ -40,10 +40,6 @@ function LastMeeting(props) {
         <td>{lastMeeting}</td>
       </tr>
       <tr>
-        <td>Meetings attended</td>
-        <td>{numberOfMeetings}</td>
-      </tr>
-      <tr>
         <td>Meetings attended last month</td>
         <td>{meetingsLastMonth}</td>
       </tr>
