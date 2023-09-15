@@ -146,6 +146,12 @@ app.get("/dashboardData", authenticate, (req, res) => {
 
 app.post("/signIn", authenticate, (req, res) => {
   const name = req.body.member;
+  
+  // Make sure it is past 2:30 pm to let anyone sign in
+  if (new Date().getHours() < 14) {
+    res.json({ message: "It is not past 2:30 pm yet" });
+    return;
+  }
 
   // Get who it was signed by through the token
   let token = req.headers.authorization.split(" ")[1];
