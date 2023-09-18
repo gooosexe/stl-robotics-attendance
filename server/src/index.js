@@ -314,12 +314,11 @@ app.get("/allStatus", authenticate, (req, res) => {
 
 // This function just tests that the server is running
 app.get("/api", (req, res) => {
-  res.json({ message: "Hello from server!" });
+  res.json({api:"/api", message: "Hello from server!" });
 });
 
-
 app.get("/", (req, res) => {
-  res.json({test: "test"});
+  res.json({api: "/"});
 })
 
 // This function will return the list of members based on the team and permission
