@@ -6,6 +6,7 @@ const fs = require("fs");
 
 const PORT = 3001;
 
+const key = "a;lsfjaoifea;ldfj82364984579rdfaldkasdfd6fffl"; 
 const app = express();
 
 app.use(cors());
@@ -67,7 +68,7 @@ function authenticate(req, res, next) {
   const { authorization } = req.headers;
   if (authorization) {
     const token = authorization.split(" ")[1];
-    const decoded = jwt.verify(token, "secretKey");
+    const decoded = jwt.verify(token, key);
     if (decoded) {
       next();
     } else {
@@ -80,7 +81,7 @@ function authenticate(req, res, next) {
 
 app.get("/dashboardData", authenticate, (req, res) => {
   let token = req.headers.authorization.split(" ")[1];
-  const decoded = jwt.verify(token, "secretKey");
+  const decoded = jwt.verify(token, key);
   const { username, permission } = decoded;
   const name = decoded.name;
   const team = decoded.team;
@@ -148,14 +149,14 @@ app.post("/signIn", authenticate, (req, res) => {
   const name = req.body.member;
   
   // Make sure it is past 2:30 pm to let anyone sign in
-  if (new Date().getHours() < 14) {
+  if (new Date().getHours() < 10) {
     res.json({ message: "TIME ERROR" });
     return;
   }
 
   // Get who it was signed by through the token
   let token = req.headers.authorization.split(" ")[1];
-  const decoded = jwt.verify(token, "secretKey");
+  const decoded = jwt.verify(token, key);
   const signedInBy = decoded.name;
   process.stdout.write(
     "Attempting: Sign in " + name + " by " + signedInBy + "  - - -  "
@@ -207,7 +208,7 @@ app.post("/signOut", authenticate, (req, res) => {
   const name = req.body.member;
   // Get who it was signed by through the token
   let token = req.headers.authorization.split(" ")[1];
-  const decoded = jwt.verify(token, "secretKey");
+  const decoded = jwt.verify(token, key);
   const signedOutBy = decoded.name;
 
   process.stdout.write(
@@ -260,7 +261,7 @@ app.post("/signOut", authenticate, (req, res) => {
 app.get("/allStatus", authenticate, (req, res) => {
   let token = req.headers.authorization.split(" ")[1];
   // Decode to get the team and permission
-  const decoded = jwt.verify(token, "secretKey");
+  const decoded = jwt.verify(token, key);
   const { team, permission } = decoded;
   const username = decoded.username;
   const name = decoded.name;
@@ -336,7 +337,7 @@ app.post("/login", (req, res) => {
   );
 
   if (isValid) {
-    const memberList = returnMemberList(username, team, permission);
+    const memberList = returnMemberList(username, team, pe"secretKey"rmission);
     console.log("Login successful for " + username);
     const token = jwt.sign(
       {
@@ -346,7 +347,7 @@ app.post("/login", (req, res) => {
         team: team,
         memberList: memberList,
       },
-      "secretKey"
+      key
     );
     // return token and list
     res.json({ token: token, memberList: memberList });
