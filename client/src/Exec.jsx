@@ -8,7 +8,7 @@ const serverIpAddress = "api2.robotics-attendance.tech";
  * Updates the memberStatuses dictionary at a set interval
  */
 async function updateStatuses(token, setStatusList) {
-  await fetch(`https://${serverIpAddress}/allStatus`, {
+  await fetch(`http://${serverIpAddress}/allStatus`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -24,7 +24,7 @@ async function updateStatuses(token, setStatusList) {
 
 async function signOut(token, member) {
   console.log(`Signing out ${member}...`);
-  await fetch(`https://${serverIpAddress}/signOut`, {
+  await fetch(`http://${serverIpAddress}/signOut`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -41,7 +41,7 @@ async function signOut(token, member) {
 
 async function signIn(token, member) {
   console.log(`Signing in ${member}...`);
-  await fetch(`https://${serverIpAddress}/signIn`, {
+  await fetch(`http://${serverIpAddress}/signIn`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

@@ -10,7 +10,7 @@ const serverIpAddress = "api2.robotics-attendance.tech";
  */
 async function updateStatuses(token, setStatusList) {
   try {
-    await fetch(`https://${serverIpAddress}/allStatus`, {
+    await fetch(`http://${serverIpAddress}/allStatus`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -37,7 +37,7 @@ async function updateStatuses(token, setStatusList) {
 async function signOut(token, member) {
   console.log(`Signing out ${member}...`);
   try {
-    await fetch(`https://${serverIpAddress}/signOut`, {
+    await fetch(`http://${serverIpAddress}/signOut`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -65,7 +65,7 @@ async function signOut(token, member) {
  */
 async function signIn(token, member) {
   console.log(`Signing in ${member}...`);
-  await fetch(`https://${serverIpAddress}/signIn`, {
+  await fetch(`http://${serverIpAddress}/signIn`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

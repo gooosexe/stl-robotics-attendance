@@ -8,7 +8,7 @@ function App() {
   const serverIpAddress = "api2.robotics-attendance.tech";
 
   React.useEffect(() => {
-    fetch(`https://${serverIpAddress}/api`)
+    fetch(`http://${serverIpAddress}/api`)
       .then((res) => res.json())
       .then((data) => setData(data.message));
     });
