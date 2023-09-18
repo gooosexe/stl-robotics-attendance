@@ -5,10 +5,10 @@ import AuthenticateUser from "./AuthenticateUser";
 function App() {
   const [data, setData] = React.useState(null);
 
-  const serverIpAddress = window.location.hostname;
+  const serverIpAddress = "api2.robotics-attendance.tech";
 
   React.useEffect(() => {
-    fetch(`https://${serverIpAddress}:3001/api`)
+    fetch(`https://${serverIpAddress}/api`)
       .then((res) => res.json())
       .then((data) => setData(data.message));
     });

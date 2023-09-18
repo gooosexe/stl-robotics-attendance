@@ -10,7 +10,8 @@ import Captain from "./Captain";
 import Member from "./Member";
 import Resources from "./Resources";
 
-const serverIpAddress = window.location.hostname;
+// const serverIpAddress = window.location.hostname;
+const serverIpAddress = "api2.robotics-attendance.tech"
 
 function Login() {
   const [username, setUsername] = useState("");
@@ -25,7 +26,7 @@ function Login() {
   const handleSubmit = (event) => {
     console.log(username, password);
     event.preventDefault();
-    fetch(`https://${serverIpAddress}:3001/login`, {
+    fetch(`https://${serverIpAddress}/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

@@ -1,7 +1,8 @@
 import "./styles/App.css";
 import "./styles/index.css";
 import React from "react";
-const serverIpAddress = window.location.hostname;
+// const serverIpAddress = window.location.hostname;
+const serverIpAddress = "api2.robotics-attendance.tech"; 
 /**
  *
  * @param {The token for the jwt authorization on the servberside} token
@@ -9,7 +10,7 @@ const serverIpAddress = window.location.hostname;
  */
 async function updateStatuses(token, setStatusList) {
   try {
-    await fetch(`https://${serverIpAddress}:3001/allStatus`, {
+    await fetch(`https://${serverIpAddress}/allStatus`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -36,7 +37,7 @@ async function updateStatuses(token, setStatusList) {
 async function signOut(token, member) {
   console.log(`Signing out ${member}...`);
   try {
-    await fetch(`https://${serverIpAddress}:3001/signOut`, {
+    await fetch(`https://${serverIpAddress}/signOut`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -64,7 +65,7 @@ async function signOut(token, member) {
  */
 async function signIn(token, member) {
   console.log(`Signing in ${member}...`);
-  await fetch(`https://${serverIpAddress}:3001/signIn`, {
+  await fetch(`https://${serverIpAddress}/signIn`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
