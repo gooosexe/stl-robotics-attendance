@@ -317,6 +317,11 @@ app.get("/api", (req, res) => {
   res.json({ message: "Hello from server!" });
 });
 
+
+app.get("/", (req, res) => {
+  res.json({test: "test"});
+})
+
 // This function will return the list of members based on the team and permission
 app.post("/login", (req, res) => {
   const { username, password } = req.body;
@@ -337,7 +342,7 @@ app.post("/login", (req, res) => {
   );
 
   if (isValid) {
-    const memberList = returnMemberList(username, team, pe"secretKey"rmission);
+    const memberList = returnMemberList(username, team, permission);
     console.log("Login successful for " + username);
     const token = jwt.sign(
       {
