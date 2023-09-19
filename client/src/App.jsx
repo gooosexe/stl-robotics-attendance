@@ -5,10 +5,14 @@ import AuthenticateUser from "./AuthenticateUser";
 function App() {
   const [data, setData] = React.useState(null);
 
-  const serverIpAddress = "api2.robotics-attendance.tech";
+  // var serverIpAddress = "http://api4.robotics-attendance.tech";
+  const serverIpAddress = "http://10.10.16.223:3001"; 
 
+// Fix the nocors issue by adding the following to the fetch request:
   React.useEffect(() => {
-    fetch(`http://${serverIpAddress}/api`)
+    fetch(`${serverIpAddress}/api`, {
+
+    }) 
       .then((res) => res.json())
       .then((data) => setData(data.message));
     });

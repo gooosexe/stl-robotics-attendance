@@ -10,8 +10,8 @@ import Captain from "./Captain";
 import Member from "./Member";
 import Resources from "./Resources";
 
-// const serverIpAddress = window.location.hostname;
-const serverIpAddress = "api2.robotics-attendance.tech"
+const serverIpAddress = window.location.hostname + ":3001";
+// const serverIpAddress = "api2.robotics-attendance.tech"
 
 function Login() {
   const [username, setUsername] = useState("");

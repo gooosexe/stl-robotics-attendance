@@ -1,8 +1,8 @@
 import "./styles/App.css";
 import "./styles/index.css";
 import React from "react";
-// const serverIpAddress = window.location.hostname;
-const serverIpAddress = "api2.robotics-attendance.tech"; 
+const serverIpAddress = window.location.hostname+ ":3001";
+// const serverIpAddress = "api2.robotics-attendance.tech"; 
 
 /**
  * Updates the memberStatuses dictionary at a set interval
@@ -146,7 +146,7 @@ function GetMemberList(props) {
     const intervalId = setInterval(() => {
       console.log("Updating statuses...");
       updateStatuses(token, setStatusList);
-    }, 5000);
+    }, 10000);
 
     return () => clearInterval(intervalId);
   }, [token]);

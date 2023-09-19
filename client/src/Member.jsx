@@ -1,8 +1,8 @@
 import "./styles/App.css";
 import "./styles/index.css";
 import React from "react";
-// const serverIpAddress = window.location.hostname;
-const serverIpAddress = "api2.robotics-attendance.tech"; 
+const serverIpAddress = window.location.hostname+ ":3001";
+// const serverIpAddress = "api2.robotics-attendance.tech"; 
 /**
  *
  * @param {The token for the jwt authorization on the servberside} token
@@ -101,7 +101,7 @@ function Member(props) {
     updateStatuses(token, setStatusList);
     const intervalId = setInterval(() => {
       updateStatuses(token, setStatusList);
-    }, 5000);
+    }, 10000);
     return () => clearInterval(intervalId);
   }, [token]);
 

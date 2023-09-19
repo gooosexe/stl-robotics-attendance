@@ -3,8 +3,8 @@ import "./styles/App.css";
 import "./styles/index.css";
 import "./styles/Dashboard.css";
 
-// const serverIpAddress = window.location.hostname;
-const serverIpAddress = "api2.robotics-attendance.tech"
+const serverIpAddress = window.location.hostname+ ":3001";
+// const serverIpAddress = "api2.robotics-attendance.tech"
 
 function LastMeeting(props) {
   const { name, team, permission, token } = props;

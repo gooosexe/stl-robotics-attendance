@@ -6,11 +6,25 @@ const fs = require("fs");
 
 const PORT = 3001;
 
-const key = "a;lsfjaoifea;ldfj82364984579rdfaldkasdfd6fffl"; 
+const key = "a;lsfjaoifea;ldfj82364984579rdfaldkasdfd6fffl";
 const app = express();
 
 app.use(cors());
 app.use(express.json());
+app.use((req, res, next) => {
+  console.log("SETTING HEADERS"); 
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "OPTIONS, GET, POST, PUT, PATCH, DELETE"
+  );
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  if (req.method === "OPTIONS") {
+    return res.sendStatus(200);
+  }
+  next();
+});
+
 
 function returnMemberList(username, team, permission) {
   // If executive access everyone
@@ -147,7 +161,7 @@ app.get("/dashboardData", authenticate, (req, res) => {
 
 app.post("/signIn", authenticate, (req, res) => {
   const name = req.body.member;
-  
+
   // Make sure it is past 2:30 pm to let anyone sign in
   if (new Date().getHours() < 10) {
     res.json({ message: "TIME ERROR" });
@@ -278,11 +292,11 @@ app.get("/allStatus", authenticate, (req, res) => {
 
   console.log(
     name +
-      " on " +
-      team +
-      " with permission of " +
-      permission +
-      " requested statuses"
+    " on " +
+    team +
+    " with permission of " +
+    permission +
+    " requested statuses"
   );
 
   // Loop through the timecards and check if the user is signed in or signed out
@@ -314,11 +328,20 @@ app.get("/allStatus", authenticate, (req, res) => {
 
 // This function just tests that the server is running
 app.get("/api", (req, res) => {
-  res.json({api:"/api", message: "Hello from server!" });
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "OPTIONS, GET, POST, PUT, PATCH, DELETE"
+  );
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  if (req.method === "OPTIONS") {
+    return res.sendStatus(200);
+  }
+  res.json({ api: "/api", message: "Hello from server!" });
 });
 
 app.get("/", (req, res) => {
-  res.json({api: "/"});
+  res.json({ api: "/" });
 })
 
 // This function will return the list of members based on the team and permission
@@ -333,11 +356,11 @@ app.post("/login", (req, res) => {
 
   console.log(
     "Login attempt from " +
-      ip +
-      " with username " +
-      username +
-      " on device " +
-      device
+    ip +
+    " with username " +
+    username +
+    " on device " +
+    device
   );
 
   if (isValid) {
@@ -402,6 +425,12 @@ const options = {
   cert: fs.readFileSync("./server.crt"),
 };
 
-https.createServer(options, app).listen(PORT, () => {
+// https.createServer(options, app).listen(PORT, () => {
+//   console.log(`Server listening on port ${PORT}`);
+// });
+
+
+app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
-});
+}
+);
