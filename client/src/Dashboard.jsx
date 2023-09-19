@@ -34,14 +34,14 @@ function LastMeeting(props) {
 
   return (
     <table className="dashboard">
-      <tr>
+      {/* <tr>
         <td>Last meeting attended</td>
         <td>{lastMeeting}</td>
       </tr>
       <tr>
         <td>Meetings attended last month</td>
         <td>{meetingsLastMonth}</td>
-      </tr>
+      </tr> */}
     </table>
   );
 }

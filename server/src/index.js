@@ -163,7 +163,7 @@ app.post("/signIn", authenticate, (req, res) => {
   const name = req.body.member;
 
   // Make sure it is past 2:30 pm to let anyone sign in
-  if (new Date().getHours() < 10) {
+  if (new Date().getHours() < 14) {
     res.json({ message: "TIME ERROR" });
     return;
   }
@@ -374,7 +374,8 @@ app.post("/login", (req, res) => {
         team: team,
         memberList: memberList,
       },
-      key
+      key, 
+      { expiresIn: "1h" }
     );
     // return token and list
     res.json({ token: token, memberList: memberList });
