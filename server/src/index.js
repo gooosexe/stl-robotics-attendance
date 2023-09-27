@@ -168,6 +168,8 @@ app.post("/signIn", authenticate, (req, res) => {
     return;
   }
 
+  
+
   // Get who it was signed by through the token
   let token = req.headers.authorization.split(" ")[1];
   const decoded = jwt.verify(token, key);
@@ -393,7 +395,7 @@ setInterval(function () {
   let newTimecards = []; // New timecards to write to the file
 
   // Check if it is past 4:30 pm
-  if (new Date().getHours() < 16) {
+  if (new Date().getHours() < 17) {
     return;
   }
 
