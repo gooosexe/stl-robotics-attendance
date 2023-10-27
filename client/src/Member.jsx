@@ -1,7 +1,8 @@
 import "./styles/App.css";
 import "./styles/index.css";
 import React from "react";
-const serverIpAddress = window.location.hostname+ ":3001";
+const serverIpAddress = window.location.hostname + ":3001";
+
 // const serverIpAddress = "api2.robotics-attendance.tech"; 
 /**
  *

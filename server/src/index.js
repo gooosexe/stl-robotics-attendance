@@ -12,7 +12,6 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use((req, res, next) => {
-  console.log("SETTING HEADERS"); 
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader(
     "Access-Control-Allow-Methods",
@@ -63,8 +62,8 @@ function isValidUser(providedUsername, providedPassword) {
   for (let user of users) {
     const [team, name, permission, username, password] = user.split(",");
     if (
-      providedUsername == username.trim() &&
-      providedPassword == password.trim()
+      providedUsername == username &&
+      providedPassword == password
     ) {
       return [true, permission, name, team];
     }

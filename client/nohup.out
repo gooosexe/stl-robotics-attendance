@@ -1,0 +1,23 @@
+ INFO  Accepting connections at http://localhost:3000
+
+ INFO  Gracefully shutting down. Please wait...
+ INFO  Accepting connections at http://localhost:3000
+ HTTP  2023-10-19 10:50:53 a.m. 10.10.172.20 GET /
+ HTTP  2023-10-19 10:50:53 a.m. 10.10.172.20 Returned 304 in 15 ms
+ HTTP  2023-10-19 10:50:53 a.m. 10.10.172.20 GET /static/js/main.aabeca00.js
+ HTTP  2023-10-19 10:50:53 a.m. 10.10.172.20 Returned 304 in 3 ms
+ HTTP  2023-10-19 10:50:53 a.m. 10.10.172.20 GET /static/css/main.ca0d38f5.css
+ HTTP  2023-10-19 10:50:53 a.m. 10.10.172.20 Returned 304 in 1 ms
+ HTTP  2023-10-19 10:50:53 a.m. 10.10.172.20 GET /static/media/background.7a8d807fae76e53a78cc.png
+ HTTP  2023-10-19 10:50:53 a.m. 10.10.172.20 Returned 304 in 29 ms
+ INFO  Accepting connections at http://localhost:3000
+ HTTP  2023-10-19 10:57:26 a.m. 10.10.172.20 GET /
+ HTTP  2023-10-19 10:57:26 a.m. 10.10.172.20 Returned 200 in 19 ms
+ HTTP  2023-10-19 10:57:26 a.m. 10.10.172.20 GET /static/js/main.aabeca00.js
+ HTTP  2023-10-19 10:57:26 a.m. 10.10.172.20 Returned 304 in 3 ms
+ HTTP  2023-10-19 10:57:26 a.m. 10.10.172.20 GET /static/css/main.ca0d38f5.css
+ HTTP  2023-10-19 10:57:26 a.m. 10.10.172.20 Returned 304 in 1 ms
+ HTTP  2023-10-19 10:57:26 a.m. 10.10.172.20 GET /static/media/background.7a8d807fae76e53a78cc.png
+ HTTP  2023-10-19 10:57:26 a.m. 10.10.172.20 Returned 304 in 30 ms
+
+ INFO  Gracefully shutting down. Please wait...

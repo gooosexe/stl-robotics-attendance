@@ -6,7 +6,7 @@ function App() {
   const [data, setData] = React.useState(null);
 
   // var serverIpAddress = "http://api4.robotics-attendance.tech";
-  const serverIpAddress = "http://10.10.16.223:3001"; 
+  const serverIpAddress = "http://robotics.classroom.ycdsb.ca"; 
 
 // Fix the nocors issue by adding the following to the fetch request:
   React.useEffect(() => {
